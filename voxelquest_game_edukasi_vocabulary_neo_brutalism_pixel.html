@@ -1,0 +1,2899 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VOXELQUEST // Neo-Brutalism Pixel English Vocab Game</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Pixel & Neo-Brutalist Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Press+Start+2P&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ==========================================================================
+       NEO-BRUTALISM X DIGITAL PIXEL DESIGN SYSTEM
+       ========================================================================== */
+    :root {
+      --bg-paper: #FFFDF5;
+      --ink-black: #111827;
+      --brutal-yellow: #FFE600;
+      --brutal-cyan: #00F0FF;
+      --brutal-magenta: #FF2A85;
+      --brutal-lime: #39FF14;
+      --brutal-purple: #B57EDC;
+      --brutal-orange: #FF8A00;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: var(--bg-paper);
+      color: var(--ink-black);
+      /* Pixel dot grid background */
+      background-image: radial-gradient(#111827 1.25px, transparent 1.25px);
+      background-size: 22px 22px;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    .font-pixel {
+      font-family: 'Press Start 2P', monospace;
+      line-height: 1.45;
+    }
+
+    .font-mono-brutal {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Core Neo-Brutalist Card */
+    .nb-card {
+      background-color: #FFFFFF;
+      border: 3px solid var(--ink-black);
+      box-shadow: 5px 5px 0px var(--ink-black);
+      border-radius: 6px;
+      transition: transform 0.14s ease, box-shadow 0.14s ease;
+    }
+
+    .nb-card-lg {
+      background-color: #FFFFFF;
+      border: 4px solid var(--ink-black);
+      box-shadow: 8px 8px 0px var(--ink-black);
+      border-radius: 8px;
+    }
+
+    .nb-card-hover:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0px var(--ink-black);
+    }
+
+    /* Core Neo-Brutalist Button */
+    .nb-btn {
+      border: 3px solid var(--ink-black);
+      box-shadow: 4px 4px 0px var(--ink-black);
+      border-radius: 6px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.15s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .nb-btn:hover:not(:disabled) {
+      transform: translate(-1px, -1px);
+      box-shadow: 5px 5px 0px var(--ink-black);
+    }
+
+    .nb-btn:active:not(:disabled) {
+      transform: translate(3px, 3px);
+      box-shadow: 1px 1px 0px var(--ink-black);
+    }
+
+    .nb-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      box-shadow: 2px 2px 0px var(--ink-black);
+    }
+
+    /* Neo-Brutalist Input */
+    .nb-input {
+      border: 3px solid var(--ink-black);
+      box-shadow: 4px 4px 0px var(--ink-black);
+      border-radius: 6px;
+      background: #FFFFFF;
+      outline: none;
+      transition: all 0.15s ease;
+    }
+
+    .nb-input:focus {
+      background: #FFFBEB;
+      transform: translate(-1px, -1px);
+      box-shadow: 5px 5px 0px var(--ink-black);
+    }
+
+    /* Pixel Progress Bar with Diagonal Stripes */
+    .nb-progress-track {
+      border: 3px solid var(--ink-black);
+      background-color: #E5E7EB;
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .nb-progress-fill {
+      height: 100%;
+      transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+      background-image: repeating-linear-gradient(
+        -45deg,
+        rgba(255, 255, 255, 0.22),
+        rgba(255, 255, 255, 0.22) 8px,
+        transparent 8px,
+        transparent 16px
+      );
+    }
+
+    /* Locked Folder Hatched Pattern */
+    .locked-pattern {
+      background-color: #E5E7EB;
+      background-image: repeating-linear-gradient(
+        45deg,
+        #D1D5DB,
+        #D1D5DB 10px,
+        #E5E7EB 10px,
+        #E5E7EB 20px
+      );
+    }
+
+    /* Pixel Key / Anagram Tile */
+    .pixel-tile {
+      border: 3px solid var(--ink-black);
+      box-shadow: 3px 3px 0px var(--ink-black);
+      border-radius: 4px;
+      font-family: 'Press Start 2P', monospace;
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
+      transition: transform 0.06s ease, box-shadow 0.06s ease, background-color 0.1s ease;
+    }
+
+    .pixel-tile:active:not(:disabled) {
+      transform: scale(0.95);
+      box-shadow: 1px 1px 0px var(--ink-black);
+    }
+
+    /* Animations */
+    @keyframes popIn {
+      0% { transform: scale(0.92); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes shakeError {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-7px); }
+      40% { transform: translateX(7px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+    }
+
+    @keyframes floatPixel {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .animate-pop {
+      animation: popIn 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    .animate-shake {
+      animation: shakeError 0.35s ease-in-out;
+    }
+
+    .animate-float {
+      animation: floatPixel 2.4s ease-in-out infinite;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FFFDF5;
+      border-left: 2px solid #111827;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #FFE600;
+      border: 2px solid #111827;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-[#FFE600] selection:text-[#111827]">
+
+  <!-- Full-Screen Pixel Confetti Canvas Overlay -->
+  <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+  <!-- Custom Non-Blocking Toast Notification -->
+  <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-[calc(100%-2rem)] pointer-events-none"></div>
+
+  <!-- Custom Modal Overlay (Replaces confirm/alert) -->
+  <div id="modal-overlay" class="hidden fixed inset-0 bg-black/60 z-40 flex items-center justify-center p-4 backdrop-blur-[1px]">
+    <div id="modal-content" class="nb-card-lg max-w-lg w-full p-6 bg-white animate-pop relative max-h-[90vh] overflow-y-auto"></div>
+  </div>
+
+  <!-- Main Application Root -->
+  <div id="app" class="min-h-screen flex flex-col"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import {
+      getAuth,
+      signInAnonymously,
+      signInWithCustomToken,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      setDoc,
+      onSnapshot,
+      collection
+    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    /* ==========================================================================
+       0. FIREBASE BACKEND INITIALIZATION & REAL-TIME SYNC
+       ========================================================================== */
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+    const firebaseConfig = {
+  apiKey: "AIzaSyDNGS8iW3enDHBvPWzZdIBgG8VTfzvztiU",
+  authDomain: "vocabularyquest-15fce.firebaseapp.com",
+  projectId: "vocabularyquest-15fce",
+  storageBucket: "vocabularyquest-15fce.firebasestorage.app",
+  messagingSenderId: "25180915080",
+  appId: "1:25180915080:web:9f67bd5661970780a8663d"
+};
+
+    let app = null;
+    let auth = null;
+    let db = null;
+    let firebaseUser = null;
+    let unsubscribeStudents = null;
+
+    function getStudentsCollectionRef() {
+      return collection(db, 'artifacts', appId, 'public', 'data', 'students');
+    }
+
+    function getStudentDocRef(studentId) {
+      return doc(db, 'artifacts', appId, 'public', 'data', 'students', studentId);
+    }
+
+    function normalizeUsername(raw) {
+      return (raw || '')
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, '_')
+        .replace(/[^a-z0-9_-]/g, '');
+    }
+
+    function formatLastActive(isoString) {
+      if (!isoString) return 'Baru saja';
+      const ts = Date.parse(isoString);
+      if (Number.isNaN(ts)) return isoString;
+      const diffSec = Math.max(0, Math.floor((Date.now() - ts) / 1000));
+      if (diffSec < 60) return 'Baru saja';
+      const diffMin = Math.floor(diffSec / 60);
+      if (diffMin < 60) return `${diffMin} menit lalu`;
+      const diffHr = Math.floor(diffMin / 60);
+      if (diffHr < 24) return `${diffHr} jam lalu`;
+      const d = new Date(ts);
+      return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    async function initFirebaseBackend() {
+      if (!firebaseConfig) {
+        State.dbStatus = 'OFFLINE';
+        render();
+        return;
+      }
+      try {
+        State.dbStatus = 'CONNECTING';
+        render();
+
+        app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        db = getFirestore(app);
+
+        // Authenticate first before any Firestore operation
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
+        }
+
+        firebaseUser = auth.currentUser;
+        if (!firebaseUser) {
+          await new Promise((resolve) => {
+            const unsub = onAuthStateChanged(auth, (user) => {
+              if (user) {
+                firebaseUser = user;
+                unsub();
+                resolve();
+              }
+            });
+          });
+        }
+
+        State.dbStatus = 'CONNECTED';
+        subscribeToStudentsCollection();
+        render();
+      } catch (err) {
+        console.error('Firebase initialization failed:', err);
+        State.dbStatus = 'ERROR';
+        showToast('Koneksi database gagal. Periksa jaringan Anda.', 'error');
+        render();
+      }
+    }
+
+    function subscribeToStudentsCollection() {
+      if (!db || !firebaseUser) return;
+      if (unsubscribeStudents) unsubscribeStudents();
+
+      const colRef = getStudentsCollectionRef();
+      unsubscribeStudents = onSnapshot(
+        colRef,
+        (snapshot) => {
+          const syncedList = [];
+          snapshot.forEach((docSnap) => {
+            const data = docSnap.data();
+            const uname = data.username || docSnap.id;
+            syncedList.push({
+              id: docSnap.id,
+              username: uname,
+              name: uname,
+              className: data.className || '7',
+              avatar: data.avatar || 'bot',
+              unlockedFolderId: Number(data.unlockedFolderId) || 1,
+              folderProgress: data.folderProgress || {},
+              lastActiveAt: data.lastActiveAt || null,
+              lastActive: formatLastActive(data.lastActiveAt || data.lastActive)
+            });
+          });
+          State.students = syncedList;
+          render();
+        },
+        (error) => {
+          console.error('Firestore onSnapshot error:', error);
+          State.dbStatus = 'ERROR';
+          showToast('Gagal menyinkronkan data siswa secara real-time.', 'error');
+          render();
+        }
+      );
+    }
+
+    /* ==========================================================================
+       1. RETRO CHIPTUNE SOUND ENGINE (Web Audio API - Zero External URLs)
+       ========================================================================== */
+    const SoundFX = {
+      ctx: null,
+      muted: false,
+      init() {
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) this.ctx = new AudioCtx();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      },
+      playTone(freq, type = 'square', duration = 0.1, delay = 0, vol = 0.08) {
+        if (this.muted) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime + delay);
+          gain.gain.setValueAtTime(vol, this.ctx.currentTime + delay);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + delay + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(this.ctx.currentTime + delay);
+          osc.stop(this.ctx.currentTime + delay + duration);
+        } catch (e) {
+          // Ignore audio errors on restricted devices
+        }
+      },
+      click() { this.playTone(520, 'square', 0.05, 0, 0.06); },
+      tile() { this.playTone(660, 'triangle', 0.06, 0, 0.08); },
+      correct() {
+        this.playTone(523.25, 'square', 0.09, 0, 0.08);
+        this.playTone(659.25, 'square', 0.09, 0.08, 0.08);
+        this.playTone(783.99, 'square', 0.16, 0.16, 0.09);
+      },
+      wrong() {
+        this.playTone(220, 'sawtooth', 0.14, 0, 0.09);
+        this.playTone(175, 'sawtooth', 0.2, 0.12, 0.09);
+      },
+      victory() {
+        const notes = [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5];
+        const times = [0, 0.1, 0.2, 0.3, 0.45, 0.58];
+        const durs  = [0.09, 0.09, 0.09, 0.14, 0.1, 0.32];
+        notes.forEach((n, i) => this.playTone(n, 'square', durs[i], times[i], 0.09));
+      }
+    };
+
+    /* ==========================================================================
+       2. ENGLISH PRONUNCIATION ENGINE (Web Speech API)
+       ========================================================================== */
+    function speakWord(word, rate = 0.95) {
+      try {
+        if (!('speechSynthesis' in window)) {
+          showToast('Browser tidak mendukung audio pelafalan otomatis.', 'warning');
+          return;
+        }
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(word);
+        utterance.lang = 'en-US';
+        utterance.rate = rate;
+        utterance.pitch = 1.02;
+        const voices = window.speechSynthesis.getVoices();
+        const enVoice = voices.find(v => v.lang.includes('en-US')) || voices.find(v => v.lang.includes('en'));
+        if (enVoice) utterance.voice = enVoice;
+        window.speechSynthesis.speak(utterance);
+      } catch (err) {
+        console.warn('Speech synthesis fallback:', err);
+      }
+    }
+
+    /* ==========================================================================
+       3. PIXEL CONFETTI PARTICLE SYSTEM (HTML5 Canvas)
+       ========================================================================== */
+    const Confetti = {
+      particles: [],
+      running: false,
+      canvas: null,
+      ctx: null,
+      launch() {
+        this.canvas = document.getElementById('confetti-canvas');
+        if (!this.canvas) return;
+        this.ctx = this.canvas.getContext('2d');
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+
+        const colors = ['#FFE600', '#00F0FF', '#FF2A85', '#39FF14', '#B57EDC', '#FF8A00'];
+        this.particles = [];
+        for (let i = 0; i < 130; i++) {
+          this.particles.push({
+            x: Math.random() * this.canvas.width,
+            y: -20 - Math.random() * (this.canvas.height * 0.4),
+            size: 8 + Math.floor(Math.random() * 8),
+            color: colors[Math.floor(Math.random() * colors.length)],
+            vx: (Math.random() - 0.5) * 6,
+            vy: 3 + Math.random() * 5.5,
+            rot: Math.random() * Math.PI * 2,
+            vrot: (Math.random() - 0.5) * 0.2
+          });
+        }
+        if (!this.running) {
+          this.running = true;
+          this.loop();
+        }
+      },
+      loop() {
+        if (!this.running || !this.ctx) return;
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        let active = 0;
+        for (const p of this.particles) {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.08;
+          p.rot += p.vrot;
+          if (p.y < this.canvas.height + 30) {
+            active++;
+            this.ctx.save();
+            this.ctx.translate(p.x, p.y);
+            this.ctx.rotate(p.rot);
+            this.ctx.fillStyle = p.color;
+            this.ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+            this.ctx.lineWidth = 2;
+            this.ctx.strokeStyle = '#111827';
+            this.ctx.strokeRect(-p.size / 2, -p.size / 2, p.size, p.size);
+            this.ctx.restore();
+          }
+        }
+        if (active > 0) {
+          requestAnimationFrame(() => this.loop());
+        } else {
+          this.running = false;
+          this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        }
+      }
+    };
+
+    window.addEventListener('resize', () => {
+      const c = document.getElementById('confetti-canvas');
+      if (c) {
+        c.width = window.innerWidth;
+        c.height = window.innerHeight;
+      }
+    });
+
+    /* ==========================================================================
+       4. COMPLETE CURRICULUM DATA (LEVEL 1, LEVEL 2, LEVEL 3 - 21 FOLDERS)
+       ========================================================================== */
+    const CURRICULUM = [
+      // ==================== LEVEL 1 ====================
+      {
+        id: 1, level: 1, pos: 'NOUN', title: 'Family', subtitle: 'Anggota Keluarga',
+        color: '#FFE600', icon: '👨‍👩‍👧‍👦',
+        words: [
+          { en: 'MOTHER', phonetic: '/ˈmʌð.ər/', syllables: 'MOTH • ER', id: 'Ibu', example: 'My mother loves reading books.' },
+          { en: 'FATHER', phonetic: '/ˈfɑː.ðər/', syllables: 'FA • THER', id: 'Ayah', example: 'My father drives to work every morning.' },
+          { en: 'BROTHER', phonetic: '/ˈbrʌð.ər/', syllables: 'BROTH • ER', id: 'Saudara Laki-laki', example: 'My younger brother plays soccer.' },
+          { en: 'SISTER', phonetic: '/ˈsɪs.tər/', syllables: 'SIS • TER', id: 'Saudara Perempuan', example: 'Her older sister studies at university.' },
+          { en: 'UNCLE', phonetic: '/ˈʌŋ.kəl/', syllables: 'UN • CLE', id: 'Paman', example: 'Uncle Tom lives in another city.' },
+          { en: 'AUNT', phonetic: '/ɑːnt/', syllables: 'AUNT', id: 'Bibi / Tante', example: 'My aunt bakes delicious chocolate cookies.' },
+          { en: 'COUSIN', phonetic: '/ˈkʌz.ən/', syllables: 'COUS • IN', id: 'Sepupu', example: 'My cousin and I are the same age.' },
+          { en: 'GRANDMOTHER', phonetic: '/ˈɡræn.mʌð.ər/', syllables: 'GRAND • MOTH • ER', id: 'Nenek', example: 'Grandmother tells wonderful bedtime stories.' },
+          { en: 'GRANDFATHER', phonetic: '/ˈɡræn.fɑː.ðər/', syllables: 'GRAND • FA • THER', id: 'Kakek', example: 'Grandfather enjoys gardening in the morning.' },
+          { en: 'NEPHEW', phonetic: '/ˈnef.juː/', syllables: 'NEPH • EW', id: 'Keponakan Laki-laki', example: 'Her little nephew just learned to ride a bike.' },
+          { en: 'NIECE', phonetic: '/niːs/', syllables: 'NIECE', id: 'Keponakan Perempuan', example: 'His niece won first place in the drawing contest.' },
+          { en: 'PARENTS', phonetic: '/ˈpeə.rənts/', syllables: 'PAR • ENTS', id: 'Orang Tua', example: 'Our parents always support our education.' }
+        ]
+      },
+      {
+        id: 2, level: 1, pos: 'NOUN', title: 'Days', subtitle: 'Nama-nama Hari',
+        color: '#00F0FF', icon: '📅',
+        words: [
+          { en: 'MONDAY', phonetic: '/ˈmʌn.deɪ/', syllables: 'MON • DAY', id: 'Hari Senin', example: 'We have a flag ceremony on Monday.' },
+          { en: 'TUESDAY', phonetic: '/ˈtjuːz.deɪ/', syllables: 'TUES • DAY', id: 'Hari Selasa', example: 'English class starts every Tuesday.' },
+          { en: 'WEDNESDAY', phonetic: '/ˈwenz.deɪ/', syllables: 'WEDNES • DAY', id: 'Hari Rabu', example: 'Notice the silent D in Wednesday!' },
+          { en: 'THURSDAY', phonetic: '/ˈθɜːz.deɪ/', syllables: 'THURS • DAY', id: 'Hari Kamis', example: 'We practice music on Thursday.' },
+          { en: 'FRIDAY', phonetic: '/ˈfraɪ.deɪ/', syllables: 'FRI • DAY', id: 'Hari Jumat', example: 'Friday is the last school day of the week.' },
+          { en: 'SATURDAY', phonetic: '/ˈsæt.ə.deɪ/', syllables: 'SAT • UR • DAY', id: 'Hari Sabtu', example: 'Saturday is great for outdoor sports.' },
+          { en: 'SUNDAY', phonetic: '/ˈsʌn.deɪ/', syllables: 'SUN • DAY', id: 'Hari Minggu', example: 'Families often rest together on Sunday.' },
+          { en: 'TODAY', phonetic: '/təˈdeɪ/', syllables: 'TO • DAY', id: 'Hari Ini', example: 'Today is a bright and sunny day.' },
+          { en: 'TOMORROW', phonetic: '/təˈmɒr.əʊ/', syllables: 'TO • MOR • ROW', id: 'Besok', example: 'We will visit the library tomorrow.' },
+          { en: 'YESTERDAY', phonetic: '/ˈjes.tə.deɪ/', syllables: 'YES • TER • DAY', id: 'Kemarin', example: 'Yesterday we learned ten new English words.' },
+          { en: 'WEEKEND', phonetic: '/ˌwiːkˈend/', syllables: 'WEEK • END', id: 'Akhir Pekan', example: 'What are your plans for the weekend?' }
+        ]
+      },
+      {
+        id: 3, level: 1, pos: 'NOUN', title: 'Months', subtitle: 'Nama-nama Bulan',
+        color: '#FF2A85', icon: '🗓️',
+        words: [
+          { en: 'JANUARY', phonetic: '/ˈdʒæn.ju.ə.ri/', syllables: 'JAN • U • AR • Y', id: 'Bulan Januari', example: 'January is the first month of the year.' },
+          { en: 'FEBRUARY', phonetic: '/ˈfeb.ru.ə.ri/', syllables: 'FEB • RU • AR • Y', id: 'Bulan Februari', example: 'Remember the first R in February.' },
+          { en: 'MARCH', phonetic: '/mɑːtʃ/', syllables: 'MARCH', id: 'Bulan Maret', example: 'Spring begins in March in the northern hemisphere.' },
+          { en: 'APRIL', phonetic: '/ˈeɪ.prəl/', syllables: 'A • PRIL', id: 'Bulan April', example: 'April showers bring May flowers.' },
+          { en: 'MAY', phonetic: '/meɪ/', syllables: 'MAY', id: 'Bulan Mei', example: 'National Education Day is celebrated in May.' },
+          { en: 'JUNE', phonetic: '/dʒuːn/', syllables: 'JUNE', id: 'Bulan Juni', example: 'School holidays often start in June.' },
+          { en: 'JULY', phonetic: '/dʒʊˈlaɪ/', syllables: 'JU • LY', id: 'Bulan Juli', example: 'The new academic semester begins in July.' },
+          { en: 'AUGUST', phonetic: '/ˈɔː.ɡəst/', syllables: 'AU • GUST', id: 'Bulan Agustus', example: 'Indonesia celebrates independence in August.' },
+          { en: 'SEPTEMBER', phonetic: '/sepˈtem.bər/', syllables: 'SEP • TEM • BER', id: 'Bulan September', example: 'The weather cools down in September.' },
+          { en: 'OCTOBER', phonetic: '/ɒkˈtəʊ.bər/', syllables: 'OC • TO • BER', id: 'Bulan Oktober', example: 'Youth Pledge Day is observed in October.' },
+          { en: 'NOVEMBER', phonetic: '/nəʊˈvem.bər/', syllables: 'NO • VEM • BER', id: 'Bulan November', example: 'Heroes Day in Indonesia falls in November.' },
+          { en: 'DECEMBER', phonetic: '/dɪˈsem.bər/', syllables: 'DE • CEM • BER', id: 'Bulan Desember', example: 'December is the final month of the year.' }
+        ]
+      },
+      {
+        id: 4, level: 1, pos: 'NOUN', title: 'Human Body', subtitle: 'Anggota Tubuh',
+        color: '#39FF14', icon: '🧍',
+        words: [
+          { en: 'SHOULDER', phonetic: '/ˈʃəʊl.dər/', syllables: 'SHOUL • DER', id: 'Bahu', example: 'He carried his backpack on one shoulder.' },
+          { en: 'STOMACH', phonetic: '/ˈstʌm.ək/', syllables: 'STOM • ACH', id: 'Perut', example: 'Eat healthy food to keep your stomach happy.' },
+          { en: 'FINGER', phonetic: '/ˈfɪŋ.ɡər/', syllables: 'FIN • GER', id: 'Jari Tangan', example: 'She pointed at the star with her finger.' },
+          { en: 'EYEBROW', phonetic: '/ˈaɪ.braʊ/', syllables: 'EYE • BROW', id: 'Alis Mata', example: 'He raised one eyebrow in surprise.' },
+          { en: 'TONGUE', phonetic: '/tʌŋ/', syllables: 'TONGUE', id: 'Lidah', example: 'Our tongue helps us taste sweet and sour.' },
+          { en: 'FOREHEAD', phonetic: '/ˈfɔː.hed/', syllables: 'FORE • HEAD', id: 'Dahi / Kening', example: 'She wiped sweat from her forehead.' },
+          { en: 'ELBOW', phonetic: '/ˈel.bəʊ/', syllables: 'EL • BOW', id: 'Siku', example: 'Do not rest your elbow on the dining table.' },
+          { en: 'KNEE', phonetic: '/niː/', syllables: 'KNEE', id: 'Lutut', example: 'Notice the silent K in the word knee!' },
+          { en: 'ANKLE', phonetic: '/ˈæŋ.kəl/', syllables: 'AN • KLE', id: 'Pergelangan Kaki', example: 'Warm up properly so you do not twist your ankle.' },
+          { en: 'WRIST', phonetic: '/rɪst/', syllables: 'WRIST', id: 'Pergelangan Tangan', example: 'She wears a digital watch on her left wrist.' },
+          { en: 'CHEEK', phonetic: '/tʃiːk/', syllables: 'CHEEK', id: 'Pipi', example: 'The baby has soft and rosy cheeks.' },
+          { en: 'THROAT', phonetic: '/θrəʊt/', syllables: 'THROAT', id: 'Tenggorokan', example: 'Drink warm water when your throat feels dry.' }
+        ]
+      },
+      {
+        id: 5, level: 1, pos: 'NOUN', title: 'Profession', subtitle: 'Jenis Pekerjaan',
+        color: '#B57EDC', icon: '👩‍⚕️',
+        words: [
+          { en: 'TEACHER', phonetic: '/ˈtiː.tʃər/', syllables: 'TEACH • ER', id: 'Guru', example: 'Our teacher explains grammar clearly.' },
+          { en: 'DOCTOR', phonetic: '/ˈdɒk.tər/', syllables: 'DOC • TOR', id: 'Dokter', example: 'The doctor examined the patient carefully.' },
+          { en: 'ENGINEER', phonetic: '/ˌen.dʒɪˈnɪər/', syllables: 'EN • GI • NEER', id: 'Insinyur / Teknisi', example: 'An engineer designs bridges and machines.' },
+          { en: 'ARCHITECT', phonetic: '/ˈɑː.kɪ.tekt/', syllables: 'AR • CHI • TECT', id: 'Arsitek', example: 'The architect drew plans for the new school.' },
+          { en: 'PILOT', phonetic: '/ˈpaɪ.lət/', syllables: 'PI • LOT', id: 'Pilot', example: 'The pilot landed the airplane smoothly.' },
+          { en: 'NURSE', phonetic: '/nɜːs/', syllables: 'NURSE', id: 'Perawat', example: 'The kind nurse cared for the children.' },
+          { en: 'CHEF', phonetic: '/ʃef/', syllables: 'CHEF', id: 'Koki / Juru Masak', example: 'The chef prepared a healthy meal.' },
+          { en: 'SCIENTIST', phonetic: '/ˈsaɪ.ən.tɪst/', syllables: 'SCI • EN • TIST', id: 'Ilmuwan', example: 'A scientist conducts experiments in the lab.' },
+          { en: 'JOURNALIST', phonetic: '/ˈdʒɜː.nə.lɪst/', syllables: 'JOUR • NA • LIST', id: 'Wartawan', example: 'The journalist wrote an accurate news report.' },
+          { en: 'FIREFIGHTER', phonetic: '/ˈfaɪəˌfaɪ.tər/', syllables: 'FIRE • FIGHT • ER', id: 'Pemadam Kebakaran', example: 'Every firefighter trains hard for emergencies.' },
+          { en: 'DENTIST', phonetic: '/ˈden.tɪst/', syllables: 'DEN • TIST', id: 'Dokter Gigi', example: 'Visit the dentist twice a year for healthy teeth.' },
+          { en: 'LAWYER', phonetic: '/ˈlɔɪ.ər/', syllables: 'LAW • YER', id: 'Pengacara', example: 'A lawyer helps people understand the law.' }
+        ]
+      },
+      {
+        id: 6, level: 1, pos: 'ADJECTIVE', title: 'Colours', subtitle: 'Warna-warna',
+        color: '#FF8A00', icon: '🎨',
+        words: [
+          { en: 'YELLOW', phonetic: '/ˈjel.əʊ/', syllables: 'YEL • LOW', id: 'Kuning', example: 'Sunflowers have bright yellow petals.' },
+          { en: 'PURPLE', phonetic: '/ˈpɜː.pəl/', syllables: 'PUR • PLE', id: 'Ungu', example: 'She wore a purple jacket today.' },
+          { en: 'ORANGE', phonetic: '/ˈɒr.ɪndʒ/', syllables: 'OR • ANGE', id: 'Jingga / Oranye', example: 'The sunset turned the sky deep orange.' },
+          { en: 'SILVER', phonetic: '/ˈsɪl.vər/', syllables: 'SIL • VER', id: 'Perak', example: 'He won a shiny silver medal.' },
+          { en: 'CRIMSON', phonetic: '/ˈkrɪm.zən/', syllables: 'CRIM • SON', id: 'Merah Tua', example: 'The autumn leaves turned crimson red.' },
+          { en: 'TURQUOISE', phonetic: '/ˈtɜː.kwɔɪz/', syllables: 'TUR • QUOISE', id: 'Biru Kehijauan', example: 'Tropical beaches often have turquoise water.' },
+          { en: 'MAROON', phonetic: '/məˈruːn/', syllables: 'MA • ROON', id: 'Merah Marun', example: 'Our school tie is dark maroon.' },
+          { en: 'GOLDEN', phonetic: '/ˈɡəʊl.dən/', syllables: 'GOL • DEN', id: 'Keemasan', example: 'The trophy had a bright golden finish.' },
+          { en: 'VIOLET', phonetic: '/ˈvaɪə.lət/', syllables: 'VI • O • LET', id: 'Ungu Lembayung', example: 'Violet is the last color of the rainbow.' },
+          { en: 'INDIGO', phonetic: '/ˈɪn.dɪ.ɡəʊ/', syllables: 'IN • DI • GO', id: 'Biru Nila', example: 'Traditional denim is dyed with indigo.' },
+          { en: 'CHARCOAL', phonetic: '/ˈtʃɑː.kəʊl/', syllables: 'CHAR • COAL', id: 'Abu-abu Gelap', example: 'He sketched the portrait using charcoal gray.' },
+          { en: 'IVORY', phonetic: '/ˈaɪ.vər.i/', syllables: 'I • VO • RY', id: 'Putih Gading', example: 'The wedding invitation was printed on ivory paper.' }
+        ]
+      },
+      {
+        id: 7, level: 1, pos: 'ADJECTIVE', title: 'Feelings', subtitle: 'Perasaan & Emosi',
+        color: '#FFE600', icon: '😊',
+        words: [
+          { en: 'HAPPY', phonetic: '/ˈhæp.i/', syllables: 'HAP • PY', id: 'Bahagia / Senang', example: 'Students feel happy when they solve puzzles.' },
+          { en: 'ANXIOUS', phonetic: '/ˈæŋk.ʃəs/', syllables: 'ANX • IOUS', id: 'Cemas / Gelisah', example: 'She felt anxious before the big exam.' },
+          { en: 'EXCITED', phonetic: '/ɪkˈsaɪ.tɪd/', syllables: 'EX • CIT • ED', id: 'Bersemangat / Antusias', example: 'We are excited about the field trip.' },
+          { en: 'GRATEFUL', phonetic: '/ˈɡreɪt.fəl/', syllables: 'GRATE • FUL', id: 'Bersyukur', example: 'I am grateful for helpful friends.' },
+          { en: 'CURIOUS', phonetic: '/ˈkjʊə.ri.əs/', syllables: 'CU • RI • OUS', id: 'Ingin Tahu', example: 'Curious learners always ask good questions.' },
+          { en: 'PROUD', phonetic: '/praʊd/', syllables: 'PROUD', id: 'Bangga', example: 'Her parents felt proud of her achievement.' },
+          { en: 'NERVOUS', phonetic: '/ˈnɜː.vəs/', syllables: 'NER • VOUS', id: 'Gugup', example: 'Take a deep breath when you feel nervous.' },
+          { en: 'CONFUSED', phonetic: '/kənˈfjuːzd/', syllables: 'CON • FUSED', id: 'Bingung', example: 'Ask the teacher if you feel confused.' },
+          { en: 'RELIEVED', phonetic: '/rɪˈliːvd/', syllables: 'RE • LIEVED', id: 'Lega', example: 'Everyone felt relieved after finishing the test.' },
+          { en: 'LONELY', phonetic: '/ˈləʊn.li/', syllables: 'LONE • LY', id: 'Kesepian', example: 'A friendly smile helps someone who feels lonely.' },
+          { en: 'CHEERFUL', phonetic: '/ˈtʃɪə.fəl/', syllables: 'CHEER • FUL', id: 'Ceria', example: 'Her cheerful attitude brightened the whole room.' },
+          { en: 'PEACEFUL', phonetic: '/ˈpiːs.fəl/', syllables: 'PEACE • FUL', id: 'Tenang / Damai', example: 'Reading by the lake feels very peaceful.' }
+        ]
+      },
+      {
+        id: 8, level: 1, pos: 'ADJECTIVE', title: 'Personality', subtitle: 'Sifat & Kepribadian',
+        color: '#00F0FF', icon: '🌟',
+        words: [
+          { en: 'HONEST', phonetic: '/ˈɒn.ɪst/', syllables: 'HON • EST', id: 'Jujur', example: 'The H in honest is silent!' },
+          { en: 'BRAVE', phonetic: '/breɪv/', syllables: 'BRAVE', id: 'Berani', example: 'It takes a brave person to speak in public.' },
+          { en: 'GENEROUS', phonetic: '/ˈdʒen.ər.əs/', syllables: 'GEN • ER • OUS', id: 'Dermawan / Baik Hati', example: 'He is generous with his time and knowledge.' },
+          { en: 'DILIGENT', phonetic: '/ˈdɪl.ɪ.dʒənt/', syllables: 'DIL • I • GENT', id: 'Rajin / Tekun', example: 'Diligent students review their notes daily.' },
+          { en: 'CREATIVE', phonetic: '/kriˈeɪ.tɪv/', syllables: 'CRE • A • TIVE', id: 'Kreatif', example: 'She has many creative ideas for art class.' },
+          { en: 'PATIENT', phonetic: '/ˈpeɪ.ʃənt/', syllables: 'PA • TIENT', id: 'Sabar', example: 'Good mentors are always patient with beginners.' },
+          { en: 'HUMBLE', phonetic: '/ˈhʌm.bəl/', syllables: 'HUM • BLE', id: 'Rendah Hati', example: 'Despite winning many awards, he stays humble.' },
+          { en: 'POLITE', phonetic: '/pəˈlaɪt/', syllables: 'PO • LITE', id: 'Sopan', example: 'Using please and thank you shows polite manners.' },
+          { en: 'CONFIDENT', phonetic: '/ˈkɒn.fɪ.dənt/', syllables: 'CON • FI • DENT', id: 'Percaya Diri', example: 'Practice makes you more confident in English.' },
+          { en: 'FRIENDLY', phonetic: '/ˈfrend.li/', syllables: 'FRIEND • LY', id: 'Ramah', example: 'The friendly classmates welcomed the new student.' },
+          { en: 'RELIABLE', phonetic: '/rɪˈlaɪ.ə.bəl/', syllables: 'RE • LI • A • BLE', id: 'Dapat Diandalkan', example: 'A reliable teammate always finishes their task.' },
+          { en: 'AMBITIOUS', phonetic: '/æmˈbɪʃ.əs/', syllables: 'AM • BI • TIOUS', id: 'Berambisi Tinggi', example: 'Ambitious learners set clear goals for themselves.' }
+        ]
+      },
+
+      // ==================== LEVEL 2 ====================
+      {
+        id: 9, level: 2, pos: 'NOUN', title: 'Animals', subtitle: 'Dunia Hewan',
+        color: '#39FF14', icon: '🦁',
+        words: [
+          { en: 'ELEPHANT', phonetic: '/ˈel.ɪ.fənt/', syllables: 'EL • E • PHANT', id: 'Gajah', example: 'An elephant uses its trunk to drink water.' },
+          { en: 'GIRAFFE', phonetic: '/dʒɪˈrɑːf/', syllables: 'GI • RAFFE', id: 'Jerapah', example: 'The giraffe has a remarkably long neck.' },
+          { en: 'DOLPHIN', phonetic: '/ˈdɒl.fɪn/', syllables: 'DOL • PHIN', id: 'Lumba-lumba', example: 'A dolphin is a smart marine mammal.' },
+          { en: 'PENGUIN', phonetic: '/ˈpeŋ.ɡwɪn/', syllables: 'PEN • GUIN', id: 'Penguin', example: 'A penguin swims fast in icy ocean water.' },
+          { en: 'BUTTERFLY', phonetic: '/ˈbʌt.ə.flaɪ/', syllables: 'BUT • TER • FLY', id: 'Kupu-kupu', example: 'A colorful butterfly landed on the flower.' },
+          { en: 'CROCODILE', phonetic: '/ˈkrɒk.ə.daɪl/', syllables: 'CROC • O • DILE', id: 'Buaya', example: 'A crocodile has powerful jaws and sharp teeth.' },
+          { en: 'KANGAROO', phonetic: '/ˌkæŋ.ɡəˈruː/', syllables: 'KAN • GA • ROO', id: 'Kanguru', example: 'A kangaroo carries its baby inside a pouch.' },
+          { en: 'CHEETAH', phonetic: '/ˈtʃiː.tə/', syllables: 'CHEE • TAH', id: 'Citah', example: 'The cheetah is the fastest land animal.' },
+          { en: 'OCTOPUS', phonetic: '/ˈɒk.tə.pəs/', syllables: 'OC • TO • PUS', id: 'Gurita', example: 'An octopus has eight flexible arms.' },
+          { en: 'SQUIRREL', phonetic: '/ˈskwɪr.əl/', syllables: 'SQUIR • REL', id: 'Tupai', example: 'The squirrel climbed the oak tree quickly.' },
+          { en: 'FLAMINGO', phonetic: '/fləˈmɪŋ.ɡəʊ/', syllables: 'FLA • MIN • GO', id: 'Burung Flamingo', example: 'A flamingo often stands on one long leg.' },
+          { en: 'HEDGEHOG', phonetic: '/ˈhedʒ.hɒɡ/', syllables: 'HEDGE • HOG', id: 'Landak Mini', example: 'A hedgehog curls into a spiky ball when scared.' }
+        ]
+      },
+      {
+        id: 10, level: 2, pos: 'NOUN', title: 'Fruits', subtitle: 'Buah-buahan',
+        color: '#FF2A85', icon: '🍓',
+        words: [
+          { en: 'PINEAPPLE', phonetic: '/ˈpaɪnˌæp.əl/', syllables: 'PINE • AP • PLE', id: 'Nanas', example: 'Fresh pineapple tastes sweet and tangy.' },
+          { en: 'STRAWBERRY', phonetic: '/ˈstrɔː.bər.i/', syllables: 'STRAW • BER • RY', id: 'Stroberi', example: 'She topped the cake with a ripe strawberry.' },
+          { en: 'WATERMELON', phonetic: '/ˈwɔː.təˌmel.ən/', syllables: 'WA • TER • MEL • ON', id: 'Semangka', example: 'Cold watermelon is refreshing on hot days.' },
+          { en: 'AVOCADO', phonetic: '/ˌæv.əˈkɑː.dəʊ/', syllables: 'AV • O • CA • DO', id: 'Alpukat', example: 'Avocado juice is very popular in Indonesia.' },
+          { en: 'BLUEBERRY', phonetic: '/ˈbluː.bər.i/', syllables: 'BLUE • BER • RY', id: 'Bluberi', example: 'Each blueberry is packed with vitamins.' },
+          { en: 'MANGO', phonetic: '/ˈmæŋ.ɡəʊ/', syllables: 'MAN • GO', id: 'Mangga', example: 'Sweet ripe mango is delicious in summer.' },
+          { en: 'PAPAYA', phonetic: '/pəˈpaɪ.ə/', syllables: 'PA • PA • YA', id: 'Pepaya', example: 'Papaya is soft, orange, and rich in fiber.' },
+          { en: 'COCONUT', phonetic: '/ˈkəʊ.kə.nʌt/', syllables: 'CO • CO • NUT', id: 'Kelapa', example: 'Young coconut water keeps you cool.' },
+          { en: 'POMEGRANATE', phonetic: '/ˈpɒm.ɪˌɡræn.ɪt/', syllables: 'POME • GRAN • ATE', id: 'Delima', example: 'A pomegranate is full of ruby-red seeds.' },
+          { en: 'RASPBERRY', phonetic: '/ˈrɑːz.bər.i/', syllables: 'RASP • BER • RY', id: 'Frambos / Rasberi', example: 'Notice the silent P in raspberry!' },
+          { en: 'CHERRY', phonetic: '/ˈtʃer.i/', syllables: 'CHER • RY', id: 'Ceri', example: 'She placed a bright red cherry on the ice cream.' },
+          { en: 'DRAGONFRUIT', phonetic: '/ˈdræɡ.ən.fruːt/', syllables: 'DRAG • ON • FRUIT', id: 'Buah Naga', example: 'Dragonfruit has vibrant pink skin and tiny seeds.' }
+        ]
+      },
+      {
+        id: 11, level: 2, pos: 'NOUN', title: 'Vegetables', subtitle: 'Sayur-sayuran',
+        color: '#39FF14', icon: '🥦',
+        words: [
+          { en: 'BROCCOLI', phonetic: '/ˈbrɒk.əl.i/', syllables: 'BROC • CO • LI', id: 'Brokoli', example: 'Steamed broccoli looks like tiny green trees.' },
+          { en: 'CUCUMBER', phonetic: '/ˈkjuː.kʌm.bər/', syllables: 'CU • CUM • BER', id: 'Mentimun', example: 'Slice the cucumber thinly for the salad.' },
+          { en: 'SPINACH', phonetic: '/ˈspɪn.ɪtʃ/', syllables: 'SPIN • ACH', id: 'Bayam', example: 'Spinach is rich in iron and nutrients.' },
+          { en: 'EGGPLANT', phonetic: '/ˈeɡ.plɑːnt/', syllables: 'EGG • PLANT', id: 'Terong', example: 'Grilled eggplant tastes delicious with sambal.' },
+          { en: 'CARROT', phonetic: '/ˈkær.ət/', syllables: 'CAR • ROT', id: 'Wortel', example: 'Rabbits love crunching on a fresh carrot.' },
+          { en: 'CABBAGE', phonetic: '/ˈkæb.ɪdʒ/', syllables: 'CAB • BAGE', id: 'Kubis / Kol', example: 'Shredded cabbage adds crunch to spring rolls.' },
+          { en: 'CAULIFLOWER', phonetic: '/ˈkɒl.ɪˌflaʊ.ər/', syllables: 'CAU • LI • FLOW • ER', id: 'Kembang Kol', example: 'Cauliflower is a white cousin of broccoli.' },
+          { en: 'MUSHROOM', phonetic: '/ˈmʌʃ.ruːm/', syllables: 'MUSH • ROOM', id: 'Jamur', example: 'We added sliced mushroom to the soup.' },
+          { en: 'PUMPKIN', phonetic: '/ˈpʌmp.kɪn/', syllables: 'PUMP • KIN', id: 'Labu Kuning', example: 'Creamy pumpkin soup is warm and comforting.' },
+          { en: 'ASPARAGUS', phonetic: '/əˈspær.ə.ɡəs/', syllables: 'AS • PAR • A • GUS', id: 'Asparagus', example: 'Roasted asparagus spears are crisp and tender.' },
+          { en: 'CELERY', phonetic: '/ˈsel.ər.i/', syllables: 'CEL • ER • Y', id: 'Seledri', example: 'Chopped celery gives soup a fresh aroma.' },
+          { en: 'GARLIC', phonetic: '/ˈɡɑː.lɪk/', syllables: 'GAR • LIC', id: 'Bawang Putih', example: 'Garlic adds savory flavor to almost any dish.' }
+        ]
+      },
+      {
+        id: 12, level: 2, pos: 'NOUN', title: 'Foods & Drinks', subtitle: 'Makanan & Minuman',
+        color: '#FFE600', icon: '🍔',
+        words: [
+          { en: 'SANDWICH', phonetic: '/ˈsæn.wɪdʒ/', syllables: 'SAND • WICH', id: 'Roti Lapis', example: 'He packed a cheese sandwich for lunch.' },
+          { en: 'OMELETTE', phonetic: '/ˈɒm.lət/', syllables: 'OM • E • LETTE', id: 'Telur Dadar', example: 'I cooked a vegetable omelette for breakfast.' },
+          { en: 'LEMONADE', phonetic: '/ˌlem.əˈneɪd/', syllables: 'LEM • ON • ADE', id: 'Limun / Es Lemon', example: 'We drank cold lemonade after playing.' },
+          { en: 'SMOOTHIE', phonetic: '/ˈsmuː.ði/', syllables: 'SMOO • THIE', id: 'Minuman Buah Halus', example: 'A banana smoothie gives instant energy.' },
+          { en: 'BISCUIT', phonetic: '/ˈbɪs.kɪt/', syllables: 'BIS • CUIT', id: 'Biskuit', example: 'Notice the silent U in biscuit!' },
+          { en: 'PANCAKE', phonetic: '/ˈpæn.keɪk/', syllables: 'PAN • CAKE', id: 'Kue Dadar / Panekuk', example: 'Warm pancake with honey is a tasty treat.' },
+          { en: 'NOODLES', phonetic: '/ˈnuː.dəlz/', syllables: 'NOO • DLES', id: 'Mi', example: 'Chicken noodles are a favorite street food.' },
+          { en: 'PORRIDGE', phonetic: '/ˈpɒr.ɪdʒ/', syllables: 'POR • RIDGE', id: 'Bubur', example: 'A bowl of warm porridge is easy to digest.' },
+          { en: 'YOGHURT', phonetic: '/ˈjɒɡ.ət/', syllables: 'YO • GHURT', id: 'Yoghurt', example: 'Plain yoghurt pairs well with fresh berries.' },
+          { en: 'CROISSANT', phonetic: '/ˈkwæs.ɒ̃/', syllables: 'CROIS • SANT', id: 'Roti Sabit', example: 'A flaky croissant smells wonderful in the bakery.' },
+          { en: 'ESPRESSO', phonetic: '/eˈspres.əʊ/', syllables: 'ES • PRES • SO', id: 'Kopi Espreso', example: 'Adults often drink espresso in the morning.' },
+          { en: 'DUMPLING', phonetic: '/ˈdʌm.plɪŋ/', syllables: 'DUMP • LING', id: 'Pangsit', example: 'Steamed dumpling is served with savory sauce.' }
+        ]
+      },
+      {
+        id: 13, level: 2, pos: 'NOUN', title: 'Transportation', subtitle: 'Alat Transportasi',
+        color: '#00F0FF', icon: '🚀',
+        words: [
+          { en: 'SUBWAY', phonetic: '/ˈsʌb.weɪ/', syllables: 'SUB • WAY', id: 'Kereta Bawah Tanah', example: 'The subway avoids traffic jams in big cities.' },
+          { en: 'HELICOPTER', phonetic: '/ˈhel.ɪˌkɒp.tər/', syllables: 'HEL • I • COP • TER', id: 'Helikopter', example: 'A helicopter can take off straight upward.' },
+          { en: 'AMBULANCE', phonetic: '/ˈæm.bjə.ləns/', syllables: 'AM • BU • LANCE', id: 'Ambulans', example: 'Cars pull over when an ambulance passes.' },
+          { en: 'BICYCLE', phonetic: '/ˈbaɪ.sɪ.kəl/', syllables: 'BI • CY • CLE', id: 'Sepeda', example: 'Riding a bicycle is eco-friendly exercise.' },
+          { en: 'SUBMARINE', phonetic: '/ˌsʌb.məˈriːn/', syllables: 'SUB • MA • RINE', id: 'Kapal Selam', example: 'A submarine travels deep beneath the ocean.' },
+          { en: 'MOTORCYCLE', phonetic: '/ˈməʊ.təˌsaɪ.kəl/', syllables: 'MO • TOR • CY • CLE', id: 'Sepeda Motor', example: 'Always wear a helmet on a motorcycle.' },
+          { en: 'AIRPLANE', phonetic: '/ˈeə.pleɪn/', syllables: 'AIR • PLANE', id: 'Pesawat Terbang', example: 'The airplane flew high above the white clouds.' },
+          { en: 'FERRY', phonetic: '/ˈfer.i/', syllables: 'FER • RY', id: 'Kapal Feri', example: 'We took a ferry across the strait.' },
+          { en: 'SCOOTER', phonetic: '/ˈskuː.tər/', syllables: 'SCOO • TER', id: 'Skuter', example: 'An electric scooter is handy for short trips.' },
+          { en: 'TRAM', phonetic: '/træm/', syllables: 'TRAM', id: 'Trem / Kereta Kota', example: 'The electric tram runs along tracks in the street.' },
+          { en: 'SPACESHIP', phonetic: '/ˈspeɪs.ʃɪp/', syllables: 'SPACE • SHIP', id: 'Pesawat Luar Angkasa', example: 'Astronauts travel to orbit in a spaceship.' },
+          { en: 'LOCOMOTIVE', phonetic: '/ˌləʊ.kəˈməʊ.tɪv/', syllables: 'LO • CO • MO • TIVE', id: 'Lokomotif Kereta', example: 'The powerful locomotive pulled twenty train cars.' }
+        ]
+      },
+      {
+        id: 14, level: 2, pos: 'ADJECTIVE', title: 'Size & Appearance', subtitle: 'Ukuran & Penampilan',
+        color: '#B57EDC', icon: '📏',
+        words: [
+          { en: 'ENORMOUS', phonetic: '/ɪˈnɔː.məs/', syllables: 'E • NOR • MOUS', id: 'Sangat Besar / Raksasa', example: 'Blue whales are enormous sea creatures.' },
+          { en: 'TINY', phonetic: '/ˈtaɪ.ni/', syllables: 'TI • NY', id: 'Sangat Kecil / Mungil', example: 'A tiny ant can lift heavy crumbs.' },
+          { en: 'SLENDER', phonetic: '/ˈslen.dər/', syllables: 'SLEN • DER', id: 'Ramping', example: 'Bamboo has tall and slender stems.' },
+          { en: 'SPARKLING', phonetic: '/ˈspɑː.klɪŋ/', syllables: 'SPAR • KLING', id: 'Berkilauan', example: 'The stars looked sparkling in the night sky.' },
+          { en: 'ANCIENT', phonetic: '/ˈeɪn.ʃənt/', syllables: 'AN • CIENT', id: 'Kuno / Sangat Tua', example: 'Borobudur is an ancient temple in Indonesia.' },
+          { en: 'GIGANTIC', phonetic: '/dʒaɪˈɡæn.tɪk/', syllables: 'GI • GAN • TIC', id: 'Raksasa / Sangat Besar', example: 'Dinosaurs were gigantic prehistoric reptiles.' },
+          { en: 'NARROW', phonetic: '/ˈnær.əʊ/', syllables: 'NAR • ROW', id: 'Sempit', example: 'The narrow bridge only fits one bicycle at a time.' },
+          { en: 'ELEGANT', phonetic: '/ˈel.ɪ.ɡənt/', syllables: 'EL • E • GANT', id: 'Anggun / Elegan', example: 'Swans look very elegant gliding on water.' },
+          { en: 'NEAT', phonetic: '/niːt/', syllables: 'NEAT', id: 'Rapi', example: 'Keep your handwriting neat and easy to read.' },
+          { en: 'MODERN', phonetic: '/ˈmɒd.ən/', syllables: 'MOD • ERN', id: 'Modern', example: 'The city library has a sleek modern design.' },
+          { en: 'MASSIVE', phonetic: '/ˈmæs.ɪv/', syllables: 'MAS • SIVE', id: 'Besar Sekali / Padat', example: 'A massive boulder blocked the mountain trail.' },
+          { en: 'GLOSSY', phonetic: '/ˈɡlɒs.i/', syllables: 'GLOS • SY', id: 'Mengilap', example: 'The magazine cover was printed on glossy paper.' }
+        ]
+      },
+      {
+        id: 15, level: 2, pos: 'ADJECTIVE', title: 'Physical State', subtitle: 'Kondisi Fisik',
+        color: '#FF8A00', icon: '⚡',
+        words: [
+          { en: 'EXHAUSTED', phonetic: '/ɪɡˈzɔː.stɪd/', syllables: 'EX • HAUS • TED', id: 'Sangat Lelah', example: 'After the marathon, the runners felt exhausted.' },
+          { en: 'ENERGETIC', phonetic: '/ˌen.əˈdʒet.ɪk/', syllables: 'EN • ER • GET • IC', id: 'Penuh Energi / Bugar', example: 'Good sleep makes you feel energetic.' },
+          { en: 'HUNGRY', phonetic: '/ˈhʌŋ.ɡri/', syllables: 'HUN • GRY', id: 'Lapar', example: 'Let us eat lunch because everyone is hungry.' },
+          { en: 'THIRSTY', phonetic: '/ˈθɜː.sti/', syllables: 'THIRS • TY', id: 'Haus', example: 'Drink clean water whenever you feel thirsty.' },
+          { en: 'HEALTHY', phonetic: '/ˈhel.θi/', syllables: 'HEAL • THY', id: 'Sehat', example: 'Vegetables and exercise keep your body healthy.' },
+          { en: 'DIZZY', phonetic: '/ˈdɪz.i/', syllables: 'DIZ • ZY', id: 'Pusing', example: 'Spinning around too fast will make you dizzy.' },
+          { en: 'SLEEPY', phonetic: '/ˈsliː.pi/', syllables: 'SLEE • PY', id: 'Mengantuk', example: 'He yawned because he felt sleepy.' },
+          { en: 'STRONG', phonetic: '/strɒŋ/', syllables: 'STRONG', id: 'Kuat', example: 'Lifting weights gradually builds strong muscles.' },
+          { en: 'FRAGILE', phonetic: '/ˈfrædʒ.aɪl/', syllables: 'FRAG • ILE', id: 'Rapuh / Lemah', example: 'Handle glass ornaments carefully because they are fragile.' },
+          { en: 'HYDRATED', phonetic: '/ˈhaɪ.dreɪ.tɪd/', syllables: 'HY • DRA • TED', id: 'Terhidrasi / Cukup Air', example: 'Bring a water bottle to stay hydrated at school.' },
+          { en: 'FEVERISH', phonetic: '/ˈfiː.vər.ɪʃ/', syllables: 'FE • VER • ISH', id: 'Demam', example: 'Rest in bed if you feel warm and feverish.' },
+          { en: 'REFRESHED', phonetic: '/rɪˈfreʃt/', syllables: 'RE • FRESHED', id: 'Segar Kembali', example: 'A cool shower left her feeling refreshed.' }
+        ]
+      },
+
+      // ==================== LEVEL 3 ====================
+      {
+        id: 16, level: 3, pos: 'NOUN', title: 'School Things & Room', subtitle: 'Benda & Ruang Sekolah',
+        color: '#FFE600', icon: '🏫',
+        words: [
+          { en: 'DICTIONARY', phonetic: '/ˈdɪk.ʃən.ər.i/', syllables: 'DIC • TION • AR • Y', id: 'Kamus', example: 'Check the dictionary for exact spelling.' },
+          { en: 'LABORATORY', phonetic: '/ləˈbɒr.ə.tər.i/', syllables: 'LAB • O • RA • TO • RY', id: 'Laboratorium', example: 'We do science experiments in the laboratory.' },
+          { en: 'LIBRARY', phonetic: '/ˈlaɪ.brər.i/', syllables: 'LI • BRAR • Y', id: 'Perpustakaan', example: 'Please speak quietly inside the library.' },
+          { en: 'BACKPACK', phonetic: '/ˈbæk.pæk/', syllables: 'BACK • PACK', id: 'Tas Ransel', example: 'Put your notebooks inside your backpack.' },
+          { en: 'MICROSCOPE', phonetic: '/ˈmaɪ.krə.skəʊp/', syllables: 'MI • CRO • SCOPE', id: 'Mikroskop', example: 'We observed plant cells under a microscope.' },
+          { en: 'CLASSROOM', phonetic: '/ˈklɑːs.ruːm/', syllables: 'CLASS • ROOM', id: 'Ruang Kelas', example: 'Our classroom has bright posters on the wall.' },
+          { en: 'WHITEBOARD', phonetic: '/ˈwaɪt.bɔːd/', syllables: 'WHITE • BOARD', id: 'Papan Tulis Putih', example: 'The teacher wrote new vocabulary on the whiteboard.' },
+          { en: 'AUDITORIUM', phonetic: '/ˌɔː.dɪˈtɔː.ri.əm/', syllables: 'AU • DI • TO • RI • UM', id: 'Aula Sekolah', example: 'The choir performed in the school auditorium.' },
+          { en: 'STATIONERY', phonetic: '/ˈsteɪ.ʃən.ər.i/', syllables: 'STA • TION • ER • Y', id: 'Alat Tulis', example: 'Pens, rulers, and erasers are basic stationery.' },
+          { en: 'PROJECTOR', phonetic: '/prəˈdʒek.tər/', syllables: 'PRO • JEC • TOR', id: 'Proyektor', example: 'The projector displayed slides on the screen.' },
+          { en: 'TEXTBOOK', phonetic: '/ˈtekst.bʊk/', syllables: 'TEXT • BOOK', id: 'Buku Pelajaran', example: 'Open your English textbook to page twelve.' },
+          { en: 'CANTEEN', phonetic: '/kænˈtiːn/', syllables: 'CAN • TEEN', id: 'Kantin Sekolah', example: 'Students buy healthy snacks at the school canteen.' }
+        ]
+      },
+      {
+        id: 17, level: 3, pos: 'NOUN', title: 'Building', subtitle: 'Gedung & Bangunan',
+        color: '#00F0FF', icon: '🏛️',
+        words: [
+          { en: 'HOSPITAL', phonetic: '/ˈhɒs.pɪ.təl/', syllables: 'HOS • PI • TAL', id: 'Rumah Sakit', example: 'Doctors and nurses work at the hospital.' },
+          { en: 'MUSEUM', phonetic: '/mjuːˈziː.əm/', syllables: 'MU • SE • UM', id: 'Museum', example: 'We saw historical artifacts at the museum.' },
+          { en: 'STADIUM', phonetic: '/ˈsteɪ.di.əm/', syllables: 'STA • DI • UM', id: 'Stadion', example: 'Thousands of fans cheered inside the stadium.' },
+          { en: 'SKYSCRAPER', phonetic: '/ˈskaɪˌskreɪ.pər/', syllables: 'SKY • SCRAP • ER', id: 'Gedung Pencakar Langit', example: 'That glass skyscraper has eighty floors.' },
+          { en: 'PHARMACY', phonetic: '/ˈfɑː.mə.si/', syllables: 'PHAR • MA • CY', id: 'Apotek', example: 'We bought medicine at the local pharmacy.' },
+          { en: 'OBSERVATORY', phonetic: '/əbˈzɜː.və.tər.i/', syllables: 'OB • SER • VA • TO • RY', id: 'Observatorium', example: 'Astronomers study stars at the observatory.' },
+          { en: 'AQUARIUM', phonetic: '/əˈkweə.ri.əm/', syllables: 'A • QUAR • I • UM', id: 'Akuarium Raksasa', example: 'We watched sea turtles swim at the aquarium.' },
+          { en: 'MONUMENT', phonetic: '/ˈmɒn.jə.mənt/', syllables: 'MON • U • MENT', id: 'Monumen / Tugu', example: 'Monas is a famous monument in Jakarta.' },
+          { en: 'WAREHOUSE', phonetic: '/ˈweə.haʊs/', syllables: 'WARE • HOUSE', id: 'Gudang', example: 'Goods are stored safely inside the warehouse.' },
+          { en: 'CATHEDRAL', phonetic: '/kəˈθiː.drəl/', syllables: 'CA • THE • DRAL', id: 'Katedral', example: 'The historic cathedral has tall stone towers.' },
+          { en: 'COURTHOUSE', phonetic: '/ˈkɔːt.haʊs/', syllables: 'COURT • HOUSE', id: 'Gedung Pengadilan', example: 'Judges work inside the courthouse.' },
+          { en: 'PLANETARIUM', phonetic: '/ˌplæn.ɪˈteə.ri.əm/', syllables: 'PLAN • E • TAR • I • UM', id: 'Planetarium', example: 'The planetarium shows movies about constellations.' }
+        ]
+      },
+      {
+        id: 18, level: 3, pos: 'NOUN', title: 'House Things & Room', subtitle: 'Benda & Ruangan Rumah',
+        color: '#FF2A85', icon: '🏠',
+        words: [
+          { en: 'WARDROBE', phonetic: '/ˈwɔː.drəʊb/', syllables: 'WAR • DROBE', id: 'Lemari Pakaian', example: 'Hang your school uniform neatly in the wardrobe.' },
+          { en: 'REFRIGERATOR', phonetic: '/rɪˈfrɪdʒ.ər.eɪ.tər/', syllables: 'RE • FRIG • ER • A • TOR', id: 'Kulkas / Lemari Es', example: 'Keep fresh milk inside the refrigerator.' },
+          { en: 'BALCONY', phonetic: '/ˈbæl.kə.ni/', syllables: 'BAL • CO • NY', id: 'Balkon', example: 'We enjoy the evening breeze on the balcony.' },
+          { en: 'KITCHEN', phonetic: '/ˈkɪtʃ.ən/', syllables: 'KITCH • EN', id: 'Dapur', example: 'Notice the silent T in kitchen!' },
+          { en: 'CUSHION', phonetic: '/ˈkʊʃ.ən/', syllables: 'CUSH • ION', id: 'Bantal Sofa', example: 'This soft cushion makes the chair comfortable.' },
+          { en: 'BEDROOM', phonetic: '/ˈbed.ruːm/', syllables: 'BED • ROOM', id: 'Kamar Tidur', example: 'Make your bed every morning in your bedroom.' },
+          { en: 'BATHROOM', phonetic: '/ˈbɑːθ.ruːm/', syllables: 'BATH • ROOM', id: 'Kamar Mandi', example: 'Keep soap and towels tidy in the bathroom.' },
+          { en: 'BOOKSHELF', phonetic: '/ˈbʊk.ʃelf/', syllables: 'BOOK • SHELF', id: 'Rak Buku', example: 'Arrange your novels neatly on the bookshelf.' },
+          { en: 'CURTAIN', phonetic: '/ˈkɜː.tən/', syllables: 'CUR • TAIN', id: 'Gorden / Tirai', example: 'Open the curtain to let morning sunlight in.' },
+          { en: 'ATTIC', phonetic: '/ˈæt.ɪk/', syllables: 'AT • TIC', id: 'Loteng', example: 'Old photo albums were stored in the attic.' },
+          { en: 'BASEMENT', phonetic: '/ˈbeɪs.mənt/', syllables: 'BASE • MENT', id: 'Ruang Bawah Tanah', example: 'The laundry room is located in the basement.' },
+          { en: 'CHANDELIER', phonetic: '/ˌʃæn.dəˈlɪər/', syllables: 'CHAN • DE • LIER', id: 'Lampu Gantung Hias', example: 'A crystal chandelier hung above the dining table.' }
+        ]
+      },
+      {
+        id: 19, level: 3, pos: 'NOUN', title: 'Sport', subtitle: 'Cabang Olahraga',
+        color: '#39FF14', icon: '🏆',
+        words: [
+          { en: 'BADMINTON', phonetic: '/ˈbæd.mɪn.tən/', syllables: 'BAD • MIN • TON', id: 'Bulu Tangkis', example: 'Indonesia has many Olympic badminton champions.' },
+          { en: 'GYMNASTICS', phonetic: '/dʒɪmˈnæs.tɪks/', syllables: 'GYM • NAS • TICS', id: 'Senam / Gimnastik', example: 'Gymnastics requires balance and flexibility.' },
+          { en: 'ARCHERY', phonetic: '/ˈɑː.tʃər.i/', syllables: 'AR • CHER • Y', id: 'Panahan', example: 'Archery trains focus and steady breathing.' },
+          { en: 'SWIMMING', phonetic: '/ˈswɪm.ɪŋ/', syllables: 'SWIM • MING', id: 'Berenang', example: 'Swimming is a great full-body workout.' },
+          { en: 'BASKETBALL', phonetic: '/ˈbɑː.skɪt.bɔːl/', syllables: 'BAS • KET • BALL', id: 'Bola Basket', example: 'He scored a three-pointer in basketball.' },
+          { en: 'VOLLEYBALL', phonetic: '/ˈvɒl.i.bɔːl/', syllables: 'VOL • LEY • BALL', id: 'Bola Voli', example: 'Teamwork is essential in volleyball matches.' },
+          { en: 'ATHLETICS', phonetic: '/æθˈlet.ɪks/', syllables: 'ATH • LET • ICS', id: 'Atletik', example: 'Running, jumping, and throwing belong to athletics.' },
+          { en: 'CYCLING', phonetic: '/ˈsaɪ.klɪŋ/', syllables: 'CY • CLING', id: 'Balap Sepeda', example: 'Cycling builds stamina and leg strength.' },
+          { en: 'TAEKWONDO', phonetic: '/ˌtaɪ.kwɒnˈdəʊ/', syllables: 'TAE • KWON • DO', id: 'Taekwondo', example: 'Taekwondo teaches discipline and high kicks.' },
+          { en: 'FENCING', phonetic: '/ˈfen.sɪŋ/', syllables: 'FEN • CING', id: 'Anggar', example: 'Fencing demands quick reflexes and footwork.' },
+          { en: 'MARATHON', phonetic: '/ˈmær.ə.θən/', syllables: 'MAR • A • THON', id: 'Lari Maraton', example: 'A full marathon covers over forty-two kilometers.' },
+          { en: 'EQUESTRIAN', phonetic: '/ɪˈkwes.tri.ən/', syllables: 'E • QUES • TRI • AN', id: 'Berkuda', example: 'Equestrian sports involve skilled horseback riding.' }
+        ]
+      },
+      {
+        id: 20, level: 3, pos: 'VERB', title: 'Daily Routine', subtitle: 'Rutinitas Sehari-hari',
+        color: '#B57EDC', icon: '⏰',
+        words: [
+          { en: 'STRETCH', phonetic: '/stretʃ/', syllables: 'STRETCH', id: 'Meregangkan Badan', example: 'Stretch your arms after waking up.' },
+          { en: 'SHOWER', phonetic: '/ˈʃaʊ.ər/', syllables: 'SHOW • ER', id: 'Mandi', example: 'I shower before putting on my uniform.' },
+          { en: 'PREPARE', phonetic: '/prɪˈpeər/', syllables: 'PRE • PARE', id: 'Mempersiapkan', example: 'Prepare your school bag the night before.' },
+          { en: 'COMMUTE', phonetic: '/kəˈmjuːt/', syllables: 'COM • MUTE', id: 'Bepergian ke Sekolah/Kerja', example: 'Many students commute by bus or bicycle.' },
+          { en: 'ORGANIZE', phonetic: '/ˈɔː.ɡən.aɪz/', syllables: 'OR • GAN • IZE', id: 'Merapikan / Mengatur', example: 'Organize your desk so you can focus better.' },
+          { en: 'BREAKFAST', phonetic: '/ˈbrek.fəst/', syllables: 'BREAK • FAST', id: 'Sarapan', example: 'Never skip breakfast before morning classes.' },
+          { en: 'EXERCISE', phonetic: '/ˈek.sə.saɪz/', syllables: 'EX • ER • CISE', id: 'Berolahraga', example: 'Exercise for thirty minutes every afternoon.' },
+          { en: 'CLEAN', phonetic: '/kliːn/', syllables: 'CLEAN', id: 'Membersihkan', example: 'We clean our classroom together every Friday.' },
+          { en: 'RELAX', phonetic: '/rɪˈlæks/', syllables: 'RE • LAX', id: 'Bersantai', example: 'Listen to calm music to relax after studying.' },
+          { en: 'DINNER', phonetic: '/ˈdɪn.ər/', syllables: 'DIN • NER', id: 'Makan Malam', example: 'Our family eats dinner together at seven.' },
+          { en: 'SLEEP', phonetic: '/sliːp/', syllables: 'SLEEP', id: 'Tidur', example: 'Teenagers need eight hours of sleep each night.' },
+          { en: 'PRAY', phonetic: '/preɪ/', syllables: 'PRAY', id: 'Berdoa', example: 'Students pray together before starting lessons.' }
+        ]
+      },
+      {
+        id: 21, level: 3, pos: 'VERB', title: 'Aktivitas Belajar', subtitle: 'Kegiatan Belajar (Study Verbs)',
+        color: '#FF8A00', icon: '📚',
+        words: [
+          { en: 'READ', phonetic: '/riːd/', syllables: 'READ', id: 'Membaca', example: 'Read the instructions carefully before answering.' },
+          { en: 'WRITE', phonetic: '/raɪt/', syllables: 'WRITE', id: 'Menulis', example: 'Notice the silent W in the verb write!' },
+          { en: 'LISTEN', phonetic: '/ˈlɪs.ən/', syllables: 'LIS • TEN', id: 'Mendengarkan', example: 'Listen closely to the pronunciation audio.' },
+          { en: 'DISCUSS', phonetic: '/dɪˈskʌs/', syllables: 'DIS • CUSS', id: 'Berdiskusi', example: 'Students discuss solutions in small groups.' },
+          { en: 'MEMORIZE', phonetic: '/ˈmem.ə.raɪz/', syllables: 'MEM • O • RIZE', id: 'Menghafal / Mengingat', example: 'Practice helps you memorize new vocabulary.' },
+          { en: 'ANALYZE', phonetic: '/ˈæn.əl.aɪz/', syllables: 'AN • A • LYZE', id: 'Menganalisis', example: 'Scientists analyze data from their experiments.' },
+          { en: 'SUMMARIZE', phonetic: '/ˈsʌm.ər.aɪz/', syllables: 'SUM • MA • RIZE', id: 'Merangkum', example: 'Summarize the story in three clear sentences.' },
+          { en: 'PRACTICE', phonetic: '/ˈpræk.tɪs/', syllables: 'PRAC • TICE', id: 'Berlatih', example: 'Practice speaking English with your classmates.' },
+          { en: 'RESEARCH', phonetic: '/rɪˈsɜːtʃ/', syllables: 'RE • SEARCH', id: 'Meneliti / Mencari Referensi', example: 'We research historical facts at the library.' },
+          { en: 'PRESENT', phonetic: '/prɪˈzent/', syllables: 'PRE • SENT', id: 'Mempresentasikan', example: 'Each group will present their project tomorrow.' },
+          { en: 'CALCULATE', phonetic: '/ˈkæl.kjə.leɪt/', syllables: 'CAL • CU • LATE', id: 'Menghitung', example: 'Calculate the total area of the rectangle.' },
+          { en: 'OBSERVE', phonetic: '/əbˈzɜːv/', syllables: 'OB • SERVE', id: 'Mengamati', example: 'Observe how the plant grows toward sunlight.' }
+        ]
+      }
+    ];
+
+    /* ==========================================================================
+       5. AVATARS & INITIAL MOCK CLASSROOM DATA (In-Memory State)
+       ========================================================================== */
+    const PIXEL_AVATARS = [
+      { id: 'bot', emoji: '🤖', label: 'Cyber Bot', bg: '#00F0FF' },
+      { id: 'cat', emoji: '🐱', label: 'Pixel Cat', bg: '#FFE600' },
+      { id: 'dino', emoji: '🦖', label: 'Brutal Dino', bg: '#39FF14' },
+      { id: 'astro', emoji: '🧑‍🚀', label: 'Astro Kid', bg: '#B57EDC' },
+      { id: 'knight', emoji: '🛡️', label: 'Pixel Knight', bg: '#FF8A00' },
+      { id: 'wizard', emoji: '🧙', label: 'Word Mage', bg: '#FF2A85' }
+    ];
+
+    function generateMockFolderHistory(count, baseScore = 275) {
+      const records = {};
+      for (let i = 1; i <= count; i++) {
+        records[i] = {
+          completed: true,
+          score: baseScore + ((i * 29) % 115),
+          stars: i % 4 === 0 ? 2 : 3,
+          accuracy: 86 + (i % 14)
+        };
+      }
+      return records;
+    }
+
+    // Sample students template (only used if teacher clicks "Muat Data Contoh" on empty database)
+    const SAMPLE_STUDENTS_SEED = [
+      {
+        id: 'nadia_putri',
+        username: 'nadia_putri',
+        className: '7',
+        avatar: 'wizard',
+        unlockedFolderId: 8,
+        folderProgress: generateMockFolderHistory(7, 285)
+      },
+      {
+        id: 'raka_pratama',
+        username: 'raka_pratama',
+        className: '8',
+        avatar: 'bot',
+        unlockedFolderId: 6,
+        folderProgress: generateMockFolderHistory(5, 275)
+      },
+      {
+        id: 'siti_aisyah',
+        username: 'siti_aisyah',
+        className: '9',
+        avatar: 'cat',
+        unlockedFolderId: 4,
+        folderProgress: generateMockFolderHistory(3, 280)
+      }
+    ];
+
+    /* ==========================================================================
+       6. CENTRAL APPLICATION STATE
+       ========================================================================== */
+    const State = {
+      view: 'LOGIN', // LOGIN | STUDENT_HUB | STUDY_MODE | QUEST_MODE | QUEST_COMPLETE | TEACHER_DASHBOARD
+      loginTab: 'STUDENT', // STUDENT | TEACHER
+      selectedAvatar: 'bot',
+
+      dbStatus: 'CONNECTING', // CONNECTING | CONNECTED | ERROR | OFFLINE
+      isLoggingIn: false,
+      isSavingProgress: false,
+
+      role: null, // 'STUDENT' | 'TEACHER'
+      currentStudentId: null,
+      teacherName: 'Ibu Ratna Sari, S.Pd',
+
+      students: [],
+      selectedLevel: 1,
+
+      // Active Study / Quest Session
+      activeFolderId: null,
+      studyCardIndex: 0,
+
+      quest: null, // Holds stage, questions, index, score, streak, correctCount, totalAnswered, etc.
+      lastQuestSummary: null,
+
+      // Teacher Dashboard filters
+      teacherFilterClass: 'ALL',
+      teacherSortBy: 'SCORE',
+      teacherSearch: ''
+    };
+
+    /* ==========================================================================
+       7. HELPER UTILITIES (Scores, Progress, Distractors, Toast, Modal)
+       ========================================================================== */
+    function getCurrentStudent() {
+      return State.students.find(s => s.id === State.currentStudentId) || null;
+    }
+
+    function computeStudentStats(student) {
+      const entries = Object.values(student.folderProgress || {});
+      const completedCount = entries.filter(e => e.completed).length;
+      const totalScore = entries.reduce((sum, e) => sum + (e.score || 0), 0);
+      const totalStars = entries.reduce((sum, e) => sum + (e.stars || 0), 0);
+      const avgAccuracy = completedCount > 0
+        ? Math.round(entries.reduce((sum, e) => sum + (e.accuracy || 0), 0) / completedCount)
+        : 0;
+      const progressPercent = Math.round((completedCount / CURRICULUM.length) * 100);
+      return {
+        completedCount,
+        totalFolders: CURRICULUM.length,
+        totalScore,
+        totalStars,
+        maxStars: CURRICULUM.length * 3,
+        avgAccuracy,
+        progressPercent
+      };
+    }
+
+    function getAvatarObj(avatarId) {
+      return PIXEL_AVATARS.find(a => a.id === avatarId) || PIXEL_AVATARS[0];
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      const bgMap = {
+        info: 'bg-[#00F0FF]',
+        success: 'bg-[#39FF14]',
+        warning: 'bg-[#FFE600]',
+        error: 'bg-[#FF2A85] text-white'
+      };
+      const toast = document.createElement('div');
+      toast.className = `nb-card p-3.5 ${bgMap[type] || bgMap.info} pointer-events-auto animate-pop flex items-center justify-between gap-3 text-sm font-bold`;
+      toast.innerHTML = `
+        <span>${message}</span>
+        <button onclick="this.parentElement.remove()" class="font-pixel text-xs px-1.5 py-0.5 border-2 border-black bg-white text-black">X</button>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => {
+        if (toast.parentElement) toast.remove();
+      }, 3400);
+    }
+
+    function openModal(htmlContent) {
+      const overlay = document.getElementById('modal-overlay');
+      const content = document.getElementById('modal-content');
+      content.innerHTML = htmlContent;
+      overlay.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      const overlay = document.getElementById('modal-overlay');
+      overlay.classList.add('hidden');
+    }
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    // Generate smart spelling distractors for Multiple Choice
+    function generateSpellingDistractors(word) {
+      const upper = word.toUpperCase();
+      const set = new Set([upper]);
+      const vowels = ['A', 'E', 'I', 'O', 'U'];
+
+      // Mutation 1: Swap two adjacent middle letters
+      if (upper.length >= 4) {
+        const idx = Math.floor(upper.length / 2) - 1;
+        const arr = upper.split('');
+        [arr[idx], arr[idx + 1]] = [arr[idx + 1], arr[idx]];
+        set.add(arr.join(''));
+      }
+
+      // Mutation 2: Replace a vowel
+      for (let i = 1; i < upper.length; i++) {
+        if (vowels.includes(upper[i])) {
+          const altV = vowels.find(v => v !== upper[i]);
+          const mutated = upper.slice(0, i) + altV + upper.slice(i + 1);
+          set.add(mutated);
+          if (set.size >= 3) break;
+        }
+      }
+
+      // Mutation 3: Double or drop a consonant
+      for (let i = 1; i < upper.length - 1; i++) {
+        if (!vowels.includes(upper[i])) {
+          if (upper[i] === upper[i + 1]) {
+            set.add(upper.slice(0, i) + upper.slice(i + 1));
+          } else {
+            set.add(upper.slice(0, i) + upper[i] + upper.slice(i));
+          }
+          if (set.size >= 4) break;
+        }
+      }
+
+      // Fallback mutations if word is very short (e.g. READ)
+      let pad = 0;
+      const suffixes = ['E', 'S', 'Y', 'ER'];
+      while (set.size < 4 && pad < suffixes.length) {
+        set.add(upper + suffixes[pad]);
+        pad++;
+      }
+
+      return shuffleArray(Array.from(set).slice(0, 4));
+    }
+
+    // Generate Indonesian meaning options for Multiple Choice (English Audio -> Indonesian Meaning)
+    function generateIndonesianOptions(targetWordObj, folderWords) {
+      const sameFolderOthers = folderWords
+        .filter(w => w.en !== targetWordObj.en)
+        .map(w => w.id);
+      const distractors = shuffleArray(sameFolderOthers).slice(0, 3);
+
+      // Fallback from global curriculum if a folder ever has fewer than 4 words
+      if (distractors.length < 3) {
+        const extraPool = CURRICULUM.flatMap(f => f.words)
+          .filter(w => w.en !== targetWordObj.en && !distractors.includes(w.id))
+          .map(w => w.id);
+        distractors.push(...shuffleArray(extraPool).slice(0, 3 - distractors.length));
+      }
+
+      return shuffleArray([targetWordObj.id, ...distractors]);
+    }
+
+    /* ==========================================================================
+       8. QUEST ENGINE (3 Stages: ANAGRAM -> MULTIPLE CHOICE -> TYPING)
+       ========================================================================== */
+    function startFolderStudy(folderId) {
+      const student = getCurrentStudent();
+      if (!student) return;
+      if (folderId > student.unlockedFolderId) {
+        SoundFX.wrong();
+        showToast(`🔒 Folder #${folderId} masih terkunci! Selesaikan folder sebelumnya dulu.`, 'warning');
+        return;
+      }
+      SoundFX.click();
+      State.activeFolderId = folderId;
+      State.studyCardIndex = 0;
+      State.view = 'STUDY_MODE';
+      render();
+      const folder = CURRICULUM.find(f => f.id === folderId);
+      if (folder && folder.words[0]) {
+        setTimeout(() => speakWord(folder.words[0].en), 250);
+      }
+    }
+
+    function startFolderQuest(folderId) {
+      const folder = CURRICULUM.find(f => f.id === folderId);
+      if (!folder) return;
+      SoundFX.click();
+
+      // Build questions for each stage using all words in the folder
+      const anagramPool = shuffleArray(folder.words).map(w => {
+        let scrambled = shuffleArray(w.en.split(''));
+        // Ensure scrambled isn't accidentally identical to original
+        if (scrambled.join('') === w.en && w.en.length > 1) {
+          scrambled.reverse();
+        }
+        return {
+          wordObj: w,
+          tiles: scrambled.map((char, idx) => ({ id: idx, char, used: false })),
+          selectedTileIds: []
+        };
+      });
+
+      const mcPool = shuffleArray(folder.words).map(w => ({
+        wordObj: w,
+        options: generateIndonesianOptions(w, folder.words),
+        selectedOption: null,
+        revealEnglish: false
+      }));
+
+      const typingPool = shuffleArray(folder.words).map(w => ({
+        wordObj: w,
+        userInput: ''
+      }));
+
+      State.quest = {
+        folderId: folder.id,
+        stage: 1, // 1 = ANAGRAM, 2 = MULTIPLE CHOICE, 3 = TYPING
+        qIndex: 0,
+        anagramPool,
+        mcPool,
+        typingPool,
+        score: 0,
+        streak: 0,
+        maxStreak: 0,
+        correctFirstTry: 0,
+        totalQuestions: folder.words.length * 3,
+        attemptedCurrent: false,
+        feedbackState: null // null | 'CORRECT' | 'WRONG'
+      };
+
+      State.view = 'QUEST_MODE';
+      render();
+      setTimeout(() => speakWord(anagramPool[0].wordObj.en), 250);
+    }
+
+    function getCurrentQuestItem() {
+      const q = State.quest;
+      if (!q) return null;
+      if (q.stage === 1) return q.anagramPool[q.qIndex];
+      if (q.stage === 2) return q.mcPool[q.qIndex];
+      return q.typingPool[q.qIndex];
+    }
+
+    function handleAnagramTilePick(tileId) {
+      const q = State.quest;
+      if (!q || q.stage !== 1 || q.feedbackState === 'CORRECT') return;
+      const item = q.anagramPool[q.qIndex];
+      const tile = item.tiles.find(t => t.id === tileId);
+      if (!tile || tile.used) return;
+      SoundFX.tile();
+      tile.used = true;
+      item.selectedTileIds.push(tileId);
+      q.feedbackState = null;
+      render();
+    }
+
+    function handleAnagramSlotRemove(slotPos) {
+      const q = State.quest;
+      if (!q || q.stage !== 1 || q.feedbackState === 'CORRECT') return;
+      const item = q.anagramPool[q.qIndex];
+      const tileId = item.selectedTileIds[slotPos];
+      if (tileId === undefined) return;
+      SoundFX.click();
+      const tile = item.tiles.find(t => t.id === tileId);
+      if (tile) tile.used = false;
+      item.selectedTileIds.splice(slotPos, 1);
+      q.feedbackState = null;
+      render();
+    }
+
+    function clearAnagramSelection() {
+      const q = State.quest;
+      if (!q || q.stage !== 1) return;
+      SoundFX.click();
+      const item = q.anagramPool[q.qIndex];
+      item.tiles.forEach(t => (t.used = false));
+      item.selectedTileIds = [];
+      q.feedbackState = null;
+      render();
+    }
+
+    function submitQuestAnswer(overrideValue = null) {
+      const q = State.quest;
+      if (!q || q.feedbackState === 'CORRECT') return;
+      const item = getCurrentQuestItem();
+      const targetAnswer = (q.stage === 2 ? item.wordObj.id : item.wordObj.en).trim().toUpperCase();
+      let userAnswer = '';
+
+      if (q.stage === 1) {
+        userAnswer = item.selectedTileIds
+          .map(id => item.tiles.find(t => t.id === id)?.char || '')
+          .join('');
+        if (userAnswer.length < targetAnswer.length) {
+          showToast('Lengkapi semua huruf pada slot anagram!', 'warning');
+          return;
+        }
+      } else if (q.stage === 2) {
+        if (overrideValue === null || overrideValue === undefined) return;
+        const chosenOption = item.options[overrideValue];
+        if (!chosenOption) return;
+        item.selectedOption = chosenOption;
+        userAnswer = chosenOption.trim().toUpperCase();
+      } else if (q.stage === 3) {
+        const inputEl = document.getElementById('typing-quest-input');
+        userAnswer = (overrideValue !== null ? overrideValue : (inputEl ? inputEl.value : '')).trim().toUpperCase();
+        item.userInput = userAnswer;
+        if (!userAnswer) {
+          showToast('Ketik ejaan katanya terlebih dahulu!', 'warning');
+          return;
+        }
+      }
+
+      if (userAnswer === targetAnswer) {
+        SoundFX.correct();
+        speakWord(item.wordObj.en);
+        q.feedbackState = 'CORRECT';
+        if (!q.attemptedCurrent) {
+          q.correctFirstTry += 1;
+          q.streak += 1;
+          if (q.streak > q.maxStreak) q.maxStreak = q.streak;
+          q.score += 20 + Math.min(q.streak * 2, 10);
+        } else {
+          q.score += 10;
+        }
+        render();
+        setTimeout(() => advanceQuestStep(), 1050);
+      } else {
+        SoundFX.wrong();
+        if (q.stage === 2) {
+          speakWord(item.wordObj.en);
+        }
+        q.feedbackState = 'WRONG';
+        q.attemptedCurrent = true;
+        q.streak = 0;
+        render();
+      }
+    }
+
+    function toggleMultipleChoiceHint() {
+      const q = State.quest;
+      if (!q || q.stage !== 2) return;
+      const item = q.mcPool[q.qIndex];
+      if (!item) return;
+      SoundFX.tile();
+      item.revealEnglish = !item.revealEnglish;
+      render();
+    }
+
+    async function advanceQuestStep() {
+      const q = State.quest;
+      if (!q) return;
+      const folder = CURRICULUM.find(f => f.id === q.folderId);
+      if (!folder) return;
+
+      q.feedbackState = null;
+      q.attemptedCurrent = false;
+
+      if (q.qIndex < folder.words.length - 1) {
+        q.qIndex += 1;
+        render();
+        const nextItem = getCurrentQuestItem();
+        if (nextItem) speakWord(nextItem.wordObj.en);
+        return;
+      }
+
+      // Move to next stage (1 -> 2 -> 3)
+      if (q.stage < 3) {
+        q.stage += 1;
+        q.qIndex = 0;
+        render();
+        const nextItem = getCurrentQuestItem();
+        if (nextItem) speakWord(nextItem.wordObj.en);
+        return;
+      }
+
+      // All 3 stages completed: compute stars, update score & unlock next folder
+      const student = getCurrentStudent();
+      const accuracy = Math.round((q.correctFirstTry / q.totalQuestions) * 100);
+      const stars = accuracy >= 90 ? 3 : accuracy >= 70 ? 2 : 1;
+      const finalScore = q.score + stars * 20;
+
+      let newlyUnlockedFolder = null;
+      if (student) {
+        const prevRecord = student.folderProgress[folder.id];
+        student.folderProgress[folder.id] = {
+          completed: true,
+          score: prevRecord ? Math.max(prevRecord.score, finalScore) : finalScore,
+          stars: prevRecord ? Math.max(prevRecord.stars, stars) : stars,
+          accuracy: prevRecord ? Math.max(prevRecord.accuracy, accuracy) : accuracy
+        };
+        const nowIso = new Date().toISOString();
+        student.lastActiveAt = nowIso;
+        student.lastActive = 'Baru saja';
+
+        if (folder.id === student.unlockedFolderId && folder.id < CURRICULUM.length) {
+          student.unlockedFolderId = folder.id + 1;
+          newlyUnlockedFolder = CURRICULUM.find(f => f.id === student.unlockedFolderId) || null;
+          if (newlyUnlockedFolder) {
+            State.selectedLevel = newlyUnlockedFolder.level;
+          }
+        }
+
+        // Persist updated student progress to Firestore
+        if (db && firebaseUser) {
+          State.isSavingProgress = true;
+          try {
+            await setDoc(
+              getStudentDocRef(student.id),
+              {
+                username: student.username,
+                className: student.className,
+                avatar: student.avatar,
+                unlockedFolderId: student.unlockedFolderId,
+                folderProgress: student.folderProgress,
+                lastActiveAt: nowIso
+              },
+              { merge: true }
+            );
+          } catch (err) {
+            console.error('Error saving quest progress:', err);
+            showToast('Gagal menyimpan progress ke cloud. Periksa koneksi.', 'error');
+          } finally {
+            State.isSavingProgress = false;
+          }
+        }
+      }
+
+      State.lastQuestSummary = {
+        folder,
+        finalScore,
+        accuracy,
+        stars,
+        maxStreak: q.maxStreak,
+        newlyUnlockedFolder
+      };
+
+      State.quest = null;
+      State.view = 'QUEST_COMPLETE';
+      SoundFX.victory();
+      Confetti.launch();
+      render();
+    }
+
+    /* ==========================================================================
+       9. ROLE ACTIONS (LOGIN, LOGOUT, CSV EXPORT, STUDENT DETAIL MODAL)
+       ========================================================================== */
+    async function handleStudentLogin(e) {
+      e.preventDefault();
+      if (State.isLoggingIn) return;
+
+      const usernameInput = document.getElementById('login-student-username');
+      const classInput = document.getElementById('login-student-class');
+      const rawUsername = (usernameInput?.value || '').trim();
+      const docId = normalizeUsername(rawUsername);
+      const selectedClass = (classInput?.value || '7').trim().toUpperCase();
+
+      if (!docId || docId.length < 3) {
+        showToast('Username minimal 3 karakter (huruf, angka, atau underscore)!', 'warning');
+        return;
+      }
+
+      if (!db || !firebaseUser) {
+        showToast('Database sedang menghubungkan, tunggu sebentar...', 'warning');
+        return;
+      }
+
+      State.isLoggingIn = true;
+      render();
+
+      try {
+        const studentRef = getStudentDocRef(docId);
+        const snap = await getDoc(studentRef);
+        const nowIso = new Date().toISOString();
+
+        let studentRecord = null;
+        let isReturning = false;
+
+        if (snap.exists()) {
+          // Existing username found -> load saved progress
+          isReturning = true;
+          const data = snap.data();
+          studentRecord = {
+            id: docId,
+            username: data.username || rawUsername,
+            name: data.username || rawUsername,
+            className: data.className || selectedClass,
+            avatar: State.selectedAvatar || data.avatar || 'bot',
+            unlockedFolderId: Number(data.unlockedFolderId) || 1,
+            folderProgress: data.folderProgress || {},
+            lastActiveAt: nowIso,
+            lastActive: 'Baru saja'
+          };
+
+          await setDoc(
+            studentRef,
+            {
+              avatar: studentRecord.avatar,
+              lastActiveAt: nowIso
+            },
+            { merge: true }
+          );
+        } else {
+          // First-time username -> create and save new profile in Firestore
+          studentRecord = {
+            id: docId,
+            username: rawUsername,
+            name: rawUsername,
+            className: selectedClass,
+            avatar: State.selectedAvatar,
+            unlockedFolderId: 1,
+            folderProgress: {},
+            createdAt: nowIso,
+            lastActiveAt: nowIso,
+            lastActive: 'Baru saja'
+          };
+
+          await setDoc(studentRef, {
+            username: studentRecord.username,
+            className: studentRecord.className,
+            avatar: studentRecord.avatar,
+            unlockedFolderId: 1,
+            folderProgress: {},
+            createdAt: nowIso,
+            lastActiveAt: nowIso
+          });
+        }
+
+        // Ensure local state reflects immediately before snapshot arrives
+        const idx = State.students.findIndex(s => s.id === docId);
+        if (idx >= 0) {
+          State.students[idx] = studentRecord;
+        } else {
+          State.students.unshift(studentRecord);
+        }
+
+        SoundFX.correct();
+        State.role = 'STUDENT';
+        State.currentStudentId = docId;
+        State.selectedLevel = CURRICULUM.find(f => f.id === studentRecord.unlockedFolderId)?.level || 1;
+        State.view = 'STUDENT_HUB';
+
+        if (isReturning) {
+          showToast(`Selamat datang kembali, @${studentRecord.username}! Progress terakhir dimuat. 🚀`, 'success');
+        } else {
+          showToast(`Username @${studentRecord.username} berhasil terdaftar & tersimpan! 🎉`, 'success');
+        }
+      } catch (err) {
+        console.error('Student login error:', err);
+        SoundFX.wrong();
+        showToast('Gagal memproses login username. Silakan coba lagi.', 'error');
+      } finally {
+        State.isLoggingIn = false;
+        render();
+      }
+    }
+
+    async function quickLoginExistingStudent(studentId) {
+      const stu = State.students.find(s => s.id === studentId);
+      if (!stu) return;
+      SoundFX.correct();
+      const nowIso = new Date().toISOString();
+      stu.lastActiveAt = nowIso;
+      stu.lastActive = 'Baru saja';
+
+      if (db && firebaseUser) {
+        setDoc(getStudentDocRef(stu.id), { lastActiveAt: nowIso }, { merge: true }).catch(() => {});
+      }
+
+      State.role = 'STUDENT';
+      State.currentStudentId = stu.id;
+      State.selectedLevel = CURRICULUM.find(f => f.id === stu.unlockedFolderId)?.level || 1;
+      State.view = 'STUDENT_HUB';
+      showToast(`Login sebagai @${stu.username} (Kelas ${stu.className})`, 'success');
+      render();
+    }
+
+    async function seedDemoStudentsToFirestore() {
+      if (!db || !firebaseUser) {
+        showToast('Database belum terhubung.', 'warning');
+        return;
+      }
+      SoundFX.click();
+      try {
+        const nowIso = new Date().toISOString();
+        for (const sample of SAMPLE_STUDENTS_SEED) {
+          await setDoc(
+            getStudentDocRef(sample.id),
+            {
+              username: sample.username,
+              className: sample.className,
+              avatar: sample.avatar,
+              unlockedFolderId: sample.unlockedFolderId,
+              folderProgress: sample.folderProgress,
+              createdAt: nowIso,
+              lastActiveAt: nowIso
+            },
+            { merge: true }
+          );
+        }
+        showToast('3 data siswa contoh berhasil ditambahkan ke database!', 'success');
+      } catch (err) {
+        console.error('Seed error:', err);
+        showToast('Gagal menambahkan data contoh.', 'error');
+      }
+    }
+
+    function handleTeacherLogin(e) {
+      e.preventDefault();
+      const nameInput = document.getElementById('login-teacher-name');
+      const pinInput = document.getElementById('login-teacher-pin');
+      const tName = (nameInput?.value || 'Ibu Ratna Sari, S.Pd').trim();
+      const pin = (pinInput?.value || '').trim();
+
+      if (pin !== '1234') {
+        SoundFX.wrong();
+        showToast('Kode PIN Guru salah! Gunakan PIN: 1234', 'error');
+        return;
+      }
+
+      SoundFX.correct();
+      State.role = 'TEACHER';
+      State.teacherName = tName || 'Guru Bahasa Inggris';
+      State.view = 'TEACHER_DASHBOARD';
+      showToast(`Dashboard Guru aktif. Halo, ${State.teacherName}!`, 'success');
+      render();
+    }
+
+    function logoutToHome() {
+      SoundFX.click();
+      window.speechSynthesis?.cancel();
+      State.role = null;
+      State.currentStudentId = null;
+      State.quest = null;
+      State.view = 'LOGIN';
+      render();
+    }
+
+    function openStudentDetailModal(studentId) {
+      const stu = State.students.find(s => s.id === studentId);
+      if (!stu) return;
+      SoundFX.click();
+      const stats = computeStudentStats(stu);
+      const av = getAvatarObj(stu.avatar);
+
+      const folderRows = CURRICULUM.map(f => {
+        const rec = stu.folderProgress[f.id];
+        const isUnlocked = f.id <= stu.unlockedFolderId;
+        let statusBadge = `<span class="px-2 py-0.5 text-xs font-bold bg-gray-200 border-2 border-black">🔒 TERKUNCI</span>`;
+        if (rec?.completed) {
+          statusBadge = `<span class="px-2 py-0.5 text-xs font-bold bg-[#39FF14] border-2 border-black">✅ SELESAI (${'★'.repeat(rec.stars)})</span>`;
+        } else if (isUnlocked) {
+          statusBadge = `<span class="px-2 py-0.5 text-xs font-bold bg-[#FFE600] border-2 border-black">▶️ AKTIF</span>`;
+        }
+        return `
+          <div class="flex items-center justify-between p-2.5 border-2 border-black rounded bg-white text-sm">
+            <div>
+              <span class="font-mono-brutal font-bold text-xs px-1.5 py-0.5 bg-black text-white mr-1.5">LV.${f.level}</span>
+              <span class="font-bold">#${f.id} ${f.title}</span>
+              <span class="text-xs text-gray-600">(${f.pos})</span>
+            </div>
+            <div class="flex items-center gap-2">
+              ${rec?.completed ? `<span class="font-mono-brutal font-bold text-xs">${rec.score} XP | ${rec.accuracy}%</span>` : ''}
+              ${statusBadge}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      openModal(`
+        <div class="flex items-start justify-between gap-3 border-b-4 border-black pb-4 mb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-14 h-14 border-3 border-black rounded flex items-center justify-center text-3xl" style="background:${av.bg}; border-width:3px;">
+              ${av.emoji}
+            </div>
+            <div>
+              <span class="text-xs font-pixel bg-[#FFE600] px-2 py-0.5 border-2 border-black">KELAS ${stu.className}</span>
+              <h3 class="text-xl font-extrabold mt-1">@${stu.username}</h3>
+              <p class="text-xs text-gray-600 font-semibold">Aktif terakhir: ${stu.lastActive}</p>
+            </div>
+          </div>
+          <button onclick="closeModal()" class="nb-btn bg-[#FF2A85] text-white px-3 py-1.5 text-xs font-pixel">X</button>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2.5 mb-4 text-center">
+          <div class="p-3 border-3 border-black rounded bg-[#FFE600]" style="border-width:3px;">
+            <div class="text-xs font-bold">TOTAL SKOR</div>
+            <div class="font-pixel text-sm mt-1">${stats.totalScore}</div>
+          </div>
+          <div class="p-3 border-3 border-black rounded bg-[#00F0FF]" style="border-width:3px;">
+            <div class="text-xs font-bold">FOLDER</div>
+            <div class="font-pixel text-sm mt-1">${stats.completedCount}/21</div>
+          </div>
+          <div class="p-3 border-3 border-black rounded bg-[#39FF14]" style="border-width:3px;">
+            <div class="text-xs font-bold">AKURASI</div>
+            <div class="font-pixel text-sm mt-1">${stats.avgAccuracy}%</div>
+          </div>
+        </div>
+
+        <h4 class="font-bold text-sm uppercase mb-2">Rincian Penguasaan Folder (Level 1 - 3):</h4>
+        <div class="space-y-2 max-h-64 overflow-y-auto pr-1">
+          ${folderRows}
+        </div>
+
+        <div class="mt-5 flex justify-end">
+          <button onclick="closeModal()" class="nb-btn bg-[#FFE600] px-5 py-2.5 text-sm">TUTUP DETAIL</button>
+        </div>
+      `);
+    }
+
+    function exportTeacherCSV() {
+      SoundFX.click();
+      const headers = ['Username Siswa', 'Kelas', 'Folder Selesai', 'Total Folder', 'Progress (%)', 'Total Skor XP', 'Rata-rata Akurasi (%)'];
+      const rows = State.students.map(s => {
+        const st = computeStudentStats(s);
+        return ['@' + s.username, s.className, st.completedCount, st.totalFolders, st.progressPercent, st.totalScore, st.avgAccuracy];
+      });
+      const csvContent = [headers, ...rows].map(r => r.join(',')).join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Laporan_Progress_Vocabulary_Siswa.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('📊 Laporan CSV berhasil diunduh!', 'success');
+    }
+
+    /* ==========================================================================
+       10. VIEW RENDERERS (LOGIN, STUDENT HUB, STUDY, QUEST, VICTORY, TEACHER)
+       ========================================================================== */
+
+    // ---------- TOP NAVBAR ----------
+    function renderNavbar() {
+      const student = getCurrentStudent();
+      const av = student ? getAvatarObj(student.avatar) : null;
+
+      const dbBadgeMap = {
+        CONNECTING: { bg: 'bg-[#FFE600]', text: '⏳ SYNC...' },
+        CONNECTED: { bg: 'bg-[#39FF14]', text: State.isSavingProgress ? '⏳ SAVING...' : '☁️ CLOUD LIVE' },
+        ERROR: { bg: 'bg-[#FF2A85] text-white', text: '⚠️ DB ERROR' },
+        OFFLINE: { bg: 'bg-gray-200', text: 'OFFLINE' }
+      };
+      const dbBadge = dbBadgeMap[State.dbStatus] || dbBadgeMap.CONNECTING;
+
+      return `
+        <header class="w-full bg-white border-b-4 border-black sticky top-0 z-30">
+          <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-[#FFE600] border-3 border-black flex items-center justify-center font-pixel text-sm shadow-[3px_3px_0px_#111827]" style="border-width:3px;">
+                VQ
+              </div>
+              <div>
+                <div class="font-pixel text-xs sm:text-sm tracking-tight">VOXELQUEST</div>
+                <div class="text-[11px] font-bold text-gray-600">NEO-BRUTALISM ENGLISH VOCAB</div>
+              </div>
+            </div>
+
+            <!-- Right Controls -->
+            <div class="flex items-center gap-2 sm:gap-3">
+              <span class="font-mono-brutal text-[10px] sm:text-xs font-extrabold px-2.5 py-1.5 border-2 border-black rounded ${dbBadge.bg}">
+                ${dbBadge.text}
+              </span>
+
+              <button
+                onclick="SoundFX.muted = !SoundFX.muted; SoundFX.click(); render();"
+                class="nb-btn bg-[#FFFDF5] px-3 py-2 text-xs flex items-center gap-1.5"
+                title="Suara Efek Game"
+              >
+                <span>${SoundFX.muted ? '🔇' : '🔊'}</span>
+                <span class="hidden sm:inline">${SoundFX.muted ? 'SFX OFF' : 'SFX ON'}</span>
+              </button>
+
+              ${State.role === 'STUDENT' && student ? `
+                <div class="flex items-center gap-2 px-3 py-1.5 bg-[#00F0FF] border-3 border-black rounded" style="border-width:3px;">
+                  <span class="text-lg">${av.emoji}</span>
+                  <div class="leading-tight">
+                    <div class="text-xs font-extrabold">@${student.username}</div>
+                    <div class="text-[10px] font-mono-brutal font-bold">KELAS ${student.className}</div>
+                  </div>
+                </div>
+              ` : ''}
+
+              ${State.role === 'TEACHER' ? `
+                <div class="flex items-center gap-2 px-3 py-1.5 bg-[#B57EDC] border-3 border-black rounded" style="border-width:3px;">
+                  <span class="text-lg">👩‍🏫</span>
+                  <div class="leading-tight">
+                    <div class="text-xs font-extrabold">${State.teacherName}</div>
+                    <div class="text-[10px] font-mono-brutal font-bold">ROLE: GURU</div>
+                  </div>
+                </div>
+              ` : ''}
+
+              ${State.role ? `
+                <button onclick="logoutToHome()" class="nb-btn bg-[#FF2A85] text-white px-3 py-2 text-xs">
+                  KELUAR
+                </button>
+              ` : ''}
+            </div>
+          </div>
+        </header>
+      `;
+    }
+
+    // ---------- VIEW 1: LOGIN & ROLE SELECTION ----------
+    function renderLoginView() {
+      const avatarButtons = PIXEL_AVATARS.map(av => {
+        const selected = State.selectedAvatar === av.id;
+        return `
+          <button
+            type="button"
+            onclick="State.selectedAvatar='${av.id}'; SoundFX.tile(); render();"
+            class="p-2 border-3 border-black rounded flex flex-col items-center justify-center transition-transform ${selected ? 'ring-4 ring-[#FF2A85] -translate-y-1 font-extrabold' : 'opacity-80 hover:opacity-100'}"
+            style="background:${av.bg}; border-width:3px;"
+          >
+            <span class="text-2xl">${av.emoji}</span>
+            <span class="text-[10px] font-bold mt-1">${av.label}</span>
+          </button>
+        `;
+      }).join('');
+
+      const recentRegisteredStudents = [...State.students]
+        .slice(0, 3)
+        .map(s => {
+          const av = getAvatarObj(s.avatar);
+          const st = computeStudentStats(s);
+          return `
+            <button
+              type="button"
+              onclick="quickLoginExistingStudent('${s.id}')"
+              class="nb-btn bg-white p-2.5 text-left flex items-center justify-between gap-2 w-full"
+            >
+              <div class="flex items-center gap-2">
+                <span class="text-xl">${av.emoji}</span>
+                <div>
+                  <div class="text-xs font-extrabold">@${s.username} (Kelas ${s.className})</div>
+                  <div class="text-[10px] text-gray-600 font-mono-brutal">${st.completedCount}/21 Folder • ${st.totalScore} XP</div>
+                </div>
+              </div>
+              <span class="text-[10px] font-pixel bg-[#39FF14] px-2 py-1 border-2 border-black">MASUK</span>
+            </button>
+          `;
+        })
+        .join('');
+
+      return `
+        ${renderNavbar()}
+        <main class="flex-1 max-w-6xl mx-auto w-full px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <!-- Left Hero Pitch -->
+          <div class="lg:col-span-6 space-y-5">
+            <div class="inline-block bg-[#FFE600] border-3 border-black px-3 py-1.5 font-pixel text-[10px] sm:text-xs shadow-[4px_4px_0px_#111827]" style="border-width:3px;">
+              ★ LEVEL 1 - 3 ENGLISH QUEST ★
+            </div>
+            <h1 class="font-pixel text-2xl sm:text-3xl lg:text-4xl leading-snug">
+              MASTER ENGLISH <span class="bg-[#00F0FF] px-2 border-3 border-black inline-block mt-1" style="border-width:3px;">VOCABULARY</span> LIKE A PRO!
+            </h1>
+            <p class="text-base sm:text-lg font-medium text-gray-800 leading-relaxed">
+              Pelajari <strong>ejaan (spelling)</strong> dan <strong>cara baca (pronunciation)</strong> bahasa Inggris dari 21 folder tematik. Selesaikan tantangan <strong>Anagram</strong>, <strong>Multiple Choice</strong>, dan <strong>Typing</strong> untuk membuka folder berikutnya!
+            </p>
+
+            <div class="grid grid-cols-3 gap-3 pt-2">
+              <div class="nb-card p-3 bg-[#FFE600]">
+                <div class="font-pixel text-xs">21</div>
+                <div class="text-xs font-extrabold mt-1">FOLDER KATA</div>
+              </div>
+              <div class="nb-card p-3 bg-[#39FF14]">
+                <div class="font-pixel text-xs">3 QUEST</div>
+                <div class="text-xs font-extrabold mt-1">PER FOLDER</div>
+              </div>
+              <div class="nb-card p-3 bg-[#FF2A85] text-white">
+                <div class="font-pixel text-xs">CLOUD</div>
+                <div class="text-xs font-extrabold mt-1">AUTO SAVE</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Login Card -->
+          <div class="lg:col-span-6">
+            <div class="nb-card-lg bg-white overflow-hidden">
+              <!-- Role Switch Tabs -->
+              <div class="grid grid-cols-2 border-b-4 border-black">
+                <button
+                  type="button"
+                  onclick="State.loginTab='STUDENT'; SoundFX.click(); render();"
+                  class="py-4 font-pixel text-xs sm:text-sm text-center border-r-4 border-black transition-colors ${State.loginTab === 'STUDENT' ? 'bg-[#FFE600]' : 'bg-gray-100 hover:bg-gray-200'}"
+                >
+                  🎮 LOGIN SISWA
+                </button>
+                <button
+                  type="button"
+                  onclick="State.loginTab='TEACHER'; SoundFX.click(); render();"
+                  class="py-4 font-pixel text-xs sm:text-sm text-center transition-colors ${State.loginTab === 'TEACHER' ? 'bg-[#B57EDC]' : 'bg-gray-100 hover:bg-gray-200'}"
+                >
+                  👩‍🏫 LOGIN GURU
+                </button>
+              </div>
+
+              <div class="p-6">
+                ${State.loginTab === 'STUDENT' ? `
+                  <form onsubmit="handleStudentLogin(event)" class="space-y-4">
+                    <div class="p-3 bg-[#FFFBEB] border-2 border-black rounded text-xs font-semibold">
+                      🔑 Gunakan <strong>Username</strong> unikmu. Saat pertama kali masuk, username otomatis tersimpan di database dan bisa dipakai kembali kapan saja untuk melanjutkan progress!
+                    </div>
+                    <div>
+                      <label class="block text-xs font-extrabold uppercase mb-1.5">Username Siswa</label>
+                      <div class="relative flex items-center">
+                        <span class="absolute left-3.5 font-mono-brutal font-extrabold text-gray-500">@</span>
+                        <input
+                          id="login-student-username"
+                          type="text"
+                          placeholder="contoh: andi_wijaya"
+                          autocomplete="username"
+                          required
+                          class="nb-input w-full pl-8 pr-4 py-3 font-mono-brutal font-bold text-base lowercase"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label class="block text-xs font-extrabold uppercase mb-1.5">Kelas (Untuk Pengguna Baru)</label>
+                      <select id="login-student-class" class="nb-input w-full px-4 py-3 font-bold text-base">
+                        <option value="7">Kelas 7</option>
+                        <option value="8">Kelas 8</option>
+                        <option value="9">Kelas 9</option>
+                        <option value="UMUM">Kelas Umum</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-xs font-extrabold uppercase mb-1.5">Pilih Avatar Pixel</label>
+                      <div class="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                        ${avatarButtons}
+                      </div>
+                    </div>
+                    <button
+                      type="submit"
+                      ${State.isLoggingIn || State.dbStatus === 'CONNECTING' ? 'disabled' : ''}
+                      class="nb-btn bg-[#39FF14] w-full py-4 font-pixel text-xs sm:text-sm mt-2"
+                    >
+                      ${State.isLoggingIn ? 'MEMUAT DATA...' : State.dbStatus === 'CONNECTING' ? 'MENGHUBUNGKAN DB...' : 'MASUK DENGAN USERNAME ▶'}
+                    </button>
+                  </form>
+
+                  ${recentRegisteredStudents ? `
+                    <div class="mt-6 pt-4 border-t-3 border-dashed border-gray-400">
+                      <div class="text-xs font-extrabold uppercase text-gray-600 mb-2">Atau Klik Username Terdaftar:</div>
+                      <div class="space-y-2">
+                        ${recentRegisteredStudents}
+                      </div>
+                    </div>
+                  ` : ''}
+                ` : `
+                  <form onsubmit="handleTeacherLogin(event)" class="space-y-4">
+                    <div class="p-3 bg-[#FFFBEB] border-2 border-black rounded text-xs font-semibold">
+                      💡 Masuk ke <strong>Dashboard Guru</strong> untuk memantau progress pembukaan folder, akurasi ejaan, dan skor seluruh siswa secara real-time.
+                    </div>
+                    <div>
+                      <label class="block text-xs font-extrabold uppercase mb-1.5">Nama Guru</label>
+                      <input id="login-teacher-name" type="text" value="${State.teacherName}" required class="nb-input w-full px-4 py-3 font-bold text-base" />
+                    </div>
+                    <div>
+                      <label class="block text-xs font-extrabold uppercase mb-1.5">Kode Akses Guru (PIN Demo: 1234)</label>
+                      <input id="login-teacher-pin" type="password" value="1234" required class="nb-input w-full px-4 py-3 font-mono-brutal font-bold text-base" />
+                    </div>
+                    <button type="submit" class="nb-btn bg-[#B57EDC] w-full py-4 font-pixel text-xs sm:text-sm">
+                      BUKA DASHBOARD GURU 📊
+                    </button>
+                  </form>
+                `}
+              </div>
+            </div>
+          </div>
+        </main>
+      `;
+    }
+
+    // ---------- VIEW 2: STUDENT HUB (CARD SCORE, FOLDERS, LEADERBOARD) ----------
+    function renderStudentHub() {
+      const student = getCurrentStudent();
+      if (!student) return renderLoginView();
+      const stats = computeStudentStats(student);
+
+      const levelFolders = CURRICULUM.filter(f => f.level === State.selectedLevel);
+      const levelCompleted = levelFolders.filter(f => student.folderProgress[f.id]?.completed).length;
+      const levelPercent = Math.round((levelCompleted / levelFolders.length) * 100);
+
+      // Render Folder Cards
+      const folderCardsHtml = levelFolders.map(folder => {
+        const record = student.folderProgress[folder.id];
+        const isCompleted = Boolean(record?.completed);
+        const isUnlocked = folder.id <= student.unlockedFolderId;
+        const isCurrentTarget = folder.id === student.unlockedFolderId && !isCompleted;
+
+        if (!isUnlocked) {
+          return `
+            <div onclick="startFolderStudy(${folder.id})" class="nb-card locked-pattern p-4 cursor-pointer opacity-85 flex flex-col justify-between min-h-[195px]">
+              <div class="flex items-center justify-between">
+                <span class="font-mono-brutal text-xs font-bold px-2 py-0.5 bg-gray-800 text-white rounded">FOLDER #${folder.id}</span>
+                <span class="text-xl">🔒</span>
+              </div>
+              <div class="my-3">
+                <div class="text-[11px] font-extrabold uppercase text-gray-600">${folder.pos}</div>
+                <h3 class="text-lg font-extrabold text-gray-700">${folder.title}</h3>
+                <p class="text-xs font-semibold text-gray-600">${folder.subtitle}</p>
+              </div>
+              <div class="text-[11px] font-bold bg-white/80 border-2 border-black px-2 py-1.5 rounded text-center">
+                Selesaikan Folder #${folder.id - 1} dulu
+              </div>
+            </div>
+          `;
+        }
+
+        return `
+          <div
+            onclick="startFolderStudy(${folder.id})"
+            class="nb-card nb-card-hover p-4 cursor-pointer flex flex-col justify-between min-h-[195px] relative ${isCurrentTarget ? 'ring-4 ring-[#FF2A85]' : ''}"
+            style="background-color: ${isCompleted ? '#FFFFFF' : folder.color};"
+          >
+            ${isCurrentTarget ? `
+              <div class="absolute -top-3 right-3 bg-[#FF2A85] text-white font-pixel text-[9px] px-2 py-1 border-2 border-black shadow-[2px_2px_0px_#111827]">
+                NEXT QUEST!
+              </div>
+            ` : ''}
+
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-mono-brutal text-xs font-extrabold px-2 py-0.5 bg-black text-white rounded">
+                #${folder.id} • ${folder.pos}
+              </span>
+              <span class="text-2xl">${folder.icon}</span>
+            </div>
+
+            <div class="my-3">
+              <h3 class="text-lg font-extrabold leading-tight">${folder.title}</h3>
+              <p class="text-xs font-bold text-gray-800 mt-0.5">${folder.subtitle}</p>
+              <div class="text-[11px] font-mono-brutal font-bold mt-2 inline-block bg-white/90 px-2 py-0.5 border-2 border-black rounded">
+                ${folder.words.length} Kosakata
+              </div>
+            </div>
+
+            ${isCompleted ? `
+              <div class="pt-2 border-t-2 border-black flex items-center justify-between">
+                <div class="text-sm font-extrabold text-amber-500 drop-shadow-[1px_1px_0px_#000]">
+                  ${'★'.repeat(record.stars)}${'☆'.repeat(3 - record.stars)}
+                </div>
+                <span class="font-mono-brutal text-xs font-extrabold bg-[#39FF14] px-2 py-0.5 border-2 border-black rounded">
+                  ${record.score} XP
+                </span>
+              </div>
+            ` : `
+              <button type="button" class="nb-btn bg-white w-full py-2 text-xs">
+                BUKA FOLDER ▶
+              </button>
+            `}
+          </div>
+        `;
+      }).join('');
+
+      // Leaderboard Ranking
+      const rankedStudents = [...State.students]
+        .map(s => ({ ...s, stats: computeStudentStats(s) }))
+        .sort((a, b) => b.stats.totalScore - a.stats.totalScore);
+
+      const leaderboardHtml = rankedStudents.map((s, idx) => {
+        const av = getAvatarObj(s.avatar);
+        const isMe = s.id === student.id;
+        const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `#${idx + 1}`;
+        return `
+          <div class="p-2.5 border-3 border-black rounded flex items-center justify-between gap-2 ${isMe ? 'bg-[#FFE600]' : 'bg-white'}" style="border-width:3px;">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="font-pixel text-xs w-7 text-center shrink-0">${medal}</span>
+              <span class="text-xl shrink-0">${av.emoji}</span>
+              <div class="truncate">
+                <div class="text-xs font-extrabold truncate">@${s.username} ${isMe ? '(Kamu)' : ''}</div>
+                <div class="text-[10px] font-mono-brutal font-bold text-gray-700">Kls ${s.className} • ${s.stats.completedCount}/21 Folder</div>
+              </div>
+            </div>
+            <div class="font-mono-brutal font-extrabold text-xs bg-black text-[#39FF14] px-2 py-1 rounded shrink-0">
+              ${s.stats.totalScore} XP
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      return `
+        ${renderNavbar()}
+        <main class="flex-1 max-w-7xl mx-auto w-full px-4 py-6 space-y-6">
+          <!-- TOP CARD SCORE & PROGRESS BAR SECTION -->
+          <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="nb-card p-4 bg-[#FFE600]">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-extrabold uppercase">CARD SCORE (TOTAL XP)</span>
+                <span class="text-xl">💎</span>
+              </div>
+              <div class="font-pixel text-xl sm:text-2xl mt-2">${stats.totalScore}</div>
+              <div class="text-xs font-bold mt-1">Bintang: ${stats.totalStars} / ${stats.maxStars} ★</div>
+            </div>
+
+            <div class="nb-card p-4 bg-[#00F0FF]">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-extrabold uppercase">FOLDER TERBUKA</span>
+                <span class="text-xl">📂</span>
+              </div>
+              <div class="font-pixel text-xl sm:text-2xl mt-2">${student.unlockedFolderId} / 21</div>
+              <div class="text-xs font-bold mt-1">Selesai: ${stats.completedCount} Folder</div>
+            </div>
+
+            <div class="nb-card p-4 bg-[#39FF14]">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-extrabold uppercase">AKURASI EJAAN</span>
+                <span class="text-xl">🎯</span>
+              </div>
+              <div class="font-pixel text-xl sm:text-2xl mt-2">${stats.avgAccuracy}%</div>
+              <div class="text-xs font-bold mt-1">Rata-rata Quest Selesai</div>
+            </div>
+
+            <div class="nb-card p-4 bg-white">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-extrabold uppercase">OVERALL PROGRESS</span>
+                <span class="font-pixel text-xs">${stats.progressPercent}%</span>
+              </div>
+              <div class="nb-progress-track h-6 w-full">
+                <div class="nb-progress-fill bg-[#FF2A85]" style="width: ${stats.progressPercent}%"></div>
+              </div>
+              <div class="text-[11px] font-bold text-gray-700 mt-2">
+                Buka semua folder dari Level 1 hingga Level 3!
+              </div>
+            </div>
+          </section>
+
+          <!-- MAIN WORKSPACE: FOLDERS + LEADERBOARD -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <!-- Left 8 Columns: Level Selector & Folder Grid -->
+            <div class="lg:col-span-8 space-y-5">
+              <!-- Level Tabs -->
+              <div class="nb-card p-4 bg-white">
+                <div class="grid grid-cols-3 gap-2 sm:gap-3">
+                  ${[1, 2, 3].map(lvl => {
+                    const active = State.selectedLevel === lvl;
+                    const titles = { 1: 'BASIC', 2: 'EXPLORER', 3: 'MASTER' };
+                    return `
+                      <button
+                        onclick="State.selectedLevel=${lvl}; SoundFX.click(); render();"
+                        class="nb-btn py-3 px-2 text-center ${active ? 'bg-[#FFE600]' : 'bg-gray-100'}"
+                      >
+                        <div class="font-pixel text-[10px] sm:text-xs">LEVEL ${lvl}</div>
+                        <div class="text-[11px] font-extrabold mt-0.5">${titles[lvl]}</div>
+                      </button>
+                    `;
+                  }).join('')}
+                </div>
+
+                <!-- Level Progress Bar -->
+                <div class="mt-4 pt-3 border-t-2 border-black flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <span class="text-xs font-extrabold">Progress Level ${State.selectedLevel}: ${levelCompleted}/${levelFolders.length} Folder</span>
+                  <div class="nb-progress-track h-4 w-full sm:w-56">
+                    <div class="nb-progress-fill bg-[#39FF14]" style="width: ${levelPercent}%"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Folder Cards Grid -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                ${folderCardsHtml}
+              </div>
+            </div>
+
+            <!-- Right 4 Columns: Live Leaderboards -->
+            <aside class="lg:col-span-4 space-y-4">
+              <div class="nb-card-lg p-5 bg-white">
+                <div class="flex items-center justify-between border-b-4 border-black pb-3 mb-4">
+                  <h2 class="font-pixel text-xs sm:text-sm flex items-center gap-2">
+                    <span>🏆</span> LEADERBOARD
+                  </h2>
+                  <span class="text-[10px] font-extrabold bg-[#39FF14] px-2 py-0.5 border-2 border-black">LIVE</span>
+                </div>
+                <div class="space-y-2.5">
+                  ${leaderboardHtml}
+                </div>
+              </div>
+
+              <div class="nb-card p-4 bg-[#FFFBEB]">
+                <h3 class="font-pixel text-xs mb-2">📌 CARA BERMAIN</h3>
+                <ol class="text-xs font-semibold space-y-1.5 list-decimal list-inside text-gray-800">
+                  <li>Klik <strong>Folder</strong> yang terbuka untuk mempelajari daftar kata.</li>
+                  <li>Dengarkan <strong>cara baca (pronunciation)</strong> dan perhatikan ejaannya.</li>
+                  <li>Tekan <strong>Mulai Quest</strong> dan taklukkan 3 tahap: <em>Anagram, Multiple Choice, & Typing</em>.</li>
+                  <li>Menangkan Quest untuk membuka folder berikutnya!</li>
+                </ol>
+              </div>
+            </aside>
+          </div>
+        </main>
+      `;
+    }
+
+    // ---------- VIEW 3: STUDY DECK MODE (PELAJARI EJAAN & CARA BACA) ----------
+    function renderStudyMode() {
+      const folder = CURRICULUM.find(f => f.id === State.activeFolderId);
+      if (!folder) return renderStudentHub();
+      const wordObj = folder.words[State.studyCardIndex];
+      const total = folder.words.length;
+
+      const pillsHtml = folder.words.map((w, idx) => {
+        const active = idx === State.studyCardIndex;
+        return `
+          <button
+            onclick="State.studyCardIndex=${idx}; SoundFX.tile(); render(); speakWord('${w.en}');"
+            class="px-3 py-1.5 border-3 border-black rounded font-mono-brutal text-xs font-extrabold transition-transform ${active ? 'bg-[#FFE600] -translate-y-1 shadow-[3px_3px_0px_#111827]' : 'bg-white opacity-75 hover:opacity-100'}"
+            style="border-width:3px;"
+          >
+            ${idx + 1}. ${w.en}
+          </button>
+        `;
+      }).join('');
+
+      return `
+        ${renderNavbar()}
+        <main class="flex-1 max-w-4xl mx-auto w-full px-4 py-6 space-y-6">
+          <!-- Top Breadcrumb Bar -->
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <button onclick="State.view='STUDENT_HUB'; SoundFX.click(); render();" class="nb-btn bg-white px-4 py-2 text-xs">
+              ← KEMBALI KE FOLDER
+            </button>
+            <div class="px-3 py-1.5 border-3 border-black rounded font-pixel text-xs" style="background:${folder.color}; border-width:3px;">
+              FOLDER #${folder.id}: ${folder.title.toUpperCase()}
+            </div>
+          </div>
+
+          <!-- Word Selector Strip -->
+          <div class="flex flex-wrap items-center justify-center gap-2">
+            ${pillsHtml}
+          </div>
+
+          <!-- Main Vocabulary Flashcard -->
+          <div class="nb-card-lg p-6 sm:p-10 bg-white text-center relative animate-pop">
+            <div class="flex items-center justify-between mb-4">
+              <span class="font-mono-brutal text-xs font-extrabold px-2.5 py-1 bg-black text-white rounded">
+                KATA ${State.studyCardIndex + 1} DARI ${total}
+              </span>
+              <span class="font-mono-brutal text-xs font-extrabold px-2.5 py-1 border-2 border-black rounded" style="background:${folder.color};">
+                ${folder.pos}
+              </span>
+            </div>
+
+            <div class="text-5xl sm:text-6xl my-3 animate-float">${folder.icon}</div>
+
+            <!-- English Spelling -->
+            <h2 class="font-pixel text-2xl sm:text-4xl tracking-wider text-black mt-2 break-all">
+              ${wordObj.en}
+            </h2>
+
+            <!-- Syllable & Phonetic Pronunciation -->
+            <div class="mt-4 flex flex-wrap items-center justify-center gap-3">
+              <span class="px-3 py-1 bg-[#FFFBEB] border-2 border-black rounded font-mono-brutal text-sm font-extrabold">
+                Ejaan Suku Kata: <span class="text-[#FF2A85]">${wordObj.syllables}</span>
+              </span>
+              <span class="px-3 py-1 bg-[#00F0FF]/30 border-2 border-black rounded font-mono-brutal text-sm font-bold">
+                Cara Baca: ${wordObj.phonetic}
+              </span>
+            </div>
+
+            <!-- Audio Pronunciation Buttons -->
+            <div class="mt-5 flex flex-wrap items-center justify-center gap-3">
+              <button
+                onclick="speakWord('${wordObj.en}', 0.95)"
+                class="nb-btn bg-[#00F0FF] px-5 py-3 text-xs sm:text-sm flex items-center gap-2"
+              >
+                <span>🔊</span> DENGARKAN (NORMAL)
+              </button>
+              <button
+                onclick="speakWord('${wordObj.en}', 0.65)"
+                class="nb-btn bg-[#FFE600] px-4 py-3 text-xs sm:text-sm flex items-center gap-2"
+              >
+                <span>🐢</span> PELAN (0.65x)
+              </button>
+            </div>
+
+            <!-- Indonesian Meaning & Sentence Context -->
+            <div class="mt-6 p-4 border-3 border-black rounded bg-[#FFFDF5] max-w-xl mx-auto" style="border-width:3px;">
+              <div class="text-xs font-extrabold uppercase text-gray-500">Arti Bahasa Indonesia</div>
+              <div class="text-xl sm:text-2xl font-extrabold text-black mt-0.5">${wordObj.id}</div>
+              <div class="mt-3 pt-3 border-t-2 border-dashed border-gray-400 text-xs sm:text-sm font-semibold text-gray-700 italic">
+                "${wordObj.example}"
+              </div>
+            </div>
+
+            <!-- Card Navigation Controls -->
+            <div class="mt-8 flex flex-wrap items-center justify-between gap-3">
+              <button
+                onclick="State.studyCardIndex = Math.max(0, State.studyCardIndex - 1); SoundFX.click(); render(); speakWord(CURRICULUM.find(f=>f.id===${folder.id}).words[State.studyCardIndex].en);"
+                ${State.studyCardIndex === 0 ? 'disabled' : ''}
+                class="nb-btn bg-white px-5 py-3 text-xs"
+              >
+                ◀ SEBELUMNYA
+              </button>
+
+              ${State.studyCardIndex < total - 1 ? `
+                <button
+                  onclick="State.studyCardIndex += 1; SoundFX.click(); render(); speakWord(CURRICULUM.find(f=>f.id===${folder.id}).words[State.studyCardIndex].en);"
+                  class="nb-btn bg-[#FFE600] px-6 py-3 text-xs sm:text-sm"
+                >
+                  KATA BERIKUTNYA ▶
+                </button>
+              ` : `
+                <button
+                  onclick="startFolderQuest(${folder.id})"
+                  class="nb-btn bg-[#39FF14] px-6 py-3.5 font-pixel text-xs sm:text-sm animate-bounce"
+                >
+                  ⚔️ MULAI QUEST SEKARANG!
+                </button>
+              `}
+            </div>
+          </div>
+
+          <!-- Direct Start Quest Shortcut -->
+          <div class="text-center">
+            <button onclick="startFolderQuest(${folder.id})" class="nb-btn bg-[#FF2A85] text-white px-6 py-3 text-xs">
+              LANGSUNG KE QUEST (ANAGRAM • MULTIPLE CHOICE • TYPING) 🚀
+            </button>
+          </div>
+        </main>
+      `;
+    }
+
+    // ---------- VIEW 4: QUEST MODE (3 STAGES) ----------
+    function renderQuestMode() {
+      const q = State.quest;
+      if (!q) return renderStudentHub();
+      const folder = CURRICULUM.find(f => f.id === q.folderId);
+      const item = getCurrentQuestItem();
+      const wordObj = item.wordObj;
+
+      const stageNames = {
+        1: 'STAGE 1/3: ANAGRAM (SUSUN HURUF)',
+        2: 'STAGE 2/3: MULTIPLE CHOICE (DENGAR & PILIH ARTI)',
+        3: 'STAGE 3/3: TYPING THE WORDS (KETIK KATA)'
+      };
+
+      const stageColors = {
+        1: '#FFE600',
+        2: '#00F0FF',
+        3: '#FF2A85'
+      };
+
+      const completedSteps = (q.stage - 1) * folder.words.length + q.qIndex;
+      const questPercent = Math.round((completedSteps / q.totalQuestions) * 100);
+
+      let stageBodyHtml = '';
+
+      // --- STAGE 1: ANAGRAM ---
+      if (q.stage === 1) {
+        const slotsHtml = wordObj.en.split('').map((_, idx) => {
+          const tileId = item.selectedTileIds[idx];
+          const tile = tileId !== undefined ? item.tiles.find(t => t.id === tileId) : null;
+          return `
+            <button
+              type="button"
+              onpointerdown="if (event.button === 0 || event.pointerType !== 'mouse') { event.preventDefault(); handleAnagramSlotRemove(${idx}); }"
+              onclick="if (event.detail === 0) handleAnagramSlotRemove(${idx})"
+              class="w-11 h-13 sm:w-13 sm:h-15 min-w-[44px] min-h-[52px] border-3 border-black rounded flex items-center justify-center font-pixel text-base sm:text-lg touch-manipulation select-none transition-colors ${tile ? 'bg-[#FFE600] shadow-[3px_3px_0px_#111827] cursor-pointer active:scale-95' : 'bg-gray-100 border-dashed'}"
+              style="border-width:3px;"
+            >
+              <span class="pointer-events-none">${tile ? tile.char : ''}</span>
+            </button>
+          `;
+        }).join('');
+
+        const scrambledTilesHtml = item.tiles.map(tile => `
+          <button
+            type="button"
+            onpointerdown="if (event.button === 0 || event.pointerType !== 'mouse') { event.preventDefault(); handleAnagramTilePick(${tile.id}); }"
+            onclick="if (event.detail === 0) handleAnagramTilePick(${tile.id})"
+            ${tile.used ? 'disabled' : ''}
+            class="pixel-tile w-12 h-14 sm:w-14 sm:h-16 flex items-center justify-center text-base sm:text-xl ${tile.used ? 'bg-gray-200 opacity-30 cursor-not-allowed shadow-none' : 'bg-[#00F0FF] hover:bg-[#39FF14] cursor-pointer'}"
+          >
+            <span class="pointer-events-none">${tile.char}</span>
+          </button>
+        `).join('');
+
+        stageBodyHtml = `
+          <div class="space-y-6">
+            <div class="text-center">
+              <span class="text-xs font-extrabold uppercase text-gray-500">Susun huruf menjadi kata bahasa Inggris untuk:</span>
+              <h3 class="text-2xl sm:text-3xl font-extrabold mt-1">${wordObj.id}</h3>
+              <div class="mt-2 flex items-center justify-center gap-2">
+                <span class="font-mono-brutal text-xs font-bold bg-gray-100 px-2.5 py-1 border-2 border-black rounded">${wordObj.phonetic}</span>
+                <button type="button" onclick="speakWord('${wordObj.en}')" class="nb-btn bg-[#00F0FF] px-3 py-1 text-xs">
+                  🔊 DENGAR SUARA
+                </button>
+              </div>
+            </div>
+
+            <!-- Answer Slots -->
+            <div class="flex flex-wrap items-center justify-center gap-2 ${q.feedbackState === 'WRONG' ? 'animate-shake' : ''}">
+              ${slotsHtml}
+            </div>
+
+            <!-- Scrambled Letter Tiles -->
+            <div class="p-4 bg-[#FFFDF5] border-3 border-black rounded flex flex-wrap items-center justify-center gap-2.5" style="border-width:3px;">
+              ${scrambledTilesHtml}
+            </div>
+
+            ${q.feedbackState === 'WRONG' ? `
+              <div class="p-3 bg-[#FF2A85] text-white border-3 border-black rounded text-center text-xs font-bold" style="border-width:3px;">
+                ❌ Urutan huruf belum tepat! Klik huruf di kotak atas untuk menghapus atau coba susun ulang.
+              </div>
+            ` : ''}
+
+            <div class="flex flex-wrap items-center justify-center gap-3">
+              <button type="button" onclick="clearAnagramSelection()" class="nb-btn bg-white px-4 py-3 text-xs">
+                ↺ RESET HURUF
+              </button>
+              <button type="button" onclick="submitQuestAnswer()" class="nb-btn bg-[#39FF14] px-6 py-3 font-pixel text-xs">
+                CEK JAWABAN ✓
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      // --- STAGE 2: MULTIPLE CHOICE (ENGLISH AUDIO -> INDONESIAN MEANING) ---
+      if (q.stage === 2) {
+        const letters = ['A', 'B', 'C', 'D'];
+        const optionsHtml = item.options.map((opt, idx) => {
+          let btnBg = 'bg-white hover:bg-[#FFFBEB]';
+          if (item.selectedOption === opt) {
+            if (q.feedbackState === 'CORRECT') btnBg = 'bg-[#39FF14]';
+            else if (q.feedbackState === 'WRONG') btnBg = 'bg-[#FF2A85] text-white animate-shake';
+          }
+          return `
+            <button
+              type="button"
+              onclick="submitQuestAnswer(${idx})"
+              class="nb-btn p-4 text-left flex items-center gap-3 ${btnBg}"
+            >
+              <span class="w-8 h-8 border-2 border-black bg-[#FFE600] text-black flex items-center justify-center font-pixel text-xs shrink-0">
+                ${letters[idx]}
+              </span>
+              <span class="text-sm sm:text-base font-extrabold">${opt}</span>
+            </button>
+          `;
+        }).join('');
+
+        stageBodyHtml = `
+          <div class="space-y-6">
+            <div class="text-center">
+              <span class="text-xs font-extrabold uppercase text-gray-500">Dengarkan kata bahasa Inggris berikut, lalu pilih artinya dalam bahasa Indonesia:</span>
+
+              <!-- Audio Pronunciation Prompt Box -->
+              <div class="mt-3 p-5 bg-[#FFFDF5] border-3 border-black rounded max-w-md mx-auto space-y-3" style="border-width:3px;">
+                <div class="flex items-center justify-center gap-2">
+                  <span class="text-3xl animate-bounce">🔊</span>
+                  <span class="font-pixel text-xs sm:text-sm">
+                    ${q.feedbackState === 'CORRECT' || item.revealEnglish ? wordObj.en : '??? (DENGARKAN AUDIO)'}
+                  </span>
+                </div>
+
+                ${q.feedbackState === 'CORRECT' || item.revealEnglish ? `
+                  <div class="font-mono-brutal text-xs font-bold text-gray-700">
+                    Cara Baca: ${wordObj.phonetic}
+                  </div>
+                ` : ''}
+
+                <div class="flex flex-wrap items-center justify-center gap-2 pt-1">
+                  <button type="button" onclick="speakWord('${wordObj.en}', 0.95)" class="nb-btn bg-[#00F0FF] px-3.5 py-2 text-xs">
+                    🔊 PUTAR ULANG
+                  </button>
+                  <button type="button" onclick="speakWord('${wordObj.en}', 0.65)" class="nb-btn bg-[#FFE600] px-3.5 py-2 text-xs">
+                    🐢 PELAN
+                  </button>
+                  <button type="button" onclick="toggleMultipleChoiceHint()" class="nb-btn bg-white px-3 py-2 text-xs">
+                    ${item.revealEnglish ? '🙈 SEMBUNYIKAN TEKS' : '👁️ INTIP KATA'}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              ${optionsHtml}
+            </div>
+
+            ${q.feedbackState === 'CORRECT' ? `
+              <div class="p-3 bg-[#39FF14] text-black border-3 border-black rounded text-center text-xs font-extrabold" style="border-width:3px;">
+                ✅ Tepat sekali! "${wordObj.en}" (${wordObj.phonetic}) artinya "${wordObj.id}".
+              </div>
+            ` : ''}
+
+            ${q.feedbackState === 'WRONG' ? `
+              <div class="p-3 bg-[#FF2A85] text-white border-3 border-black rounded text-center text-xs font-bold" style="border-width:3px;">
+                ❌ Arti kata belum tepat! Dengarkan kembali pelafalan bahasa Inggrisnya dan pilih arti Indonesia yang benar.
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }
+
+      // --- STAGE 3: TYPING THE WORDS ---
+      if (q.stage === 3) {
+        const maskedHint = wordObj.en[0] + ' ' + '_ '.repeat(wordObj.en.length - 1).trim();
+        stageBodyHtml = `
+          <form onsubmit="event.preventDefault(); submitQuestAnswer();" class="space-y-6">
+            <div class="text-center">
+              <span class="text-xs font-extrabold uppercase text-gray-500">Dengarkan & Ketik Ejaan Bahasa Inggrisnya:</span>
+              <h3 class="text-2xl sm:text-3xl font-extrabold mt-1">${wordObj.id}</h3>
+              <div class="mt-3 flex flex-wrap items-center justify-center gap-2">
+                <span class="font-mono-brutal text-xs font-bold bg-gray-100 px-2.5 py-1 border-2 border-black rounded">
+                  ${wordObj.phonetic}
+                </span>
+                <span class="font-mono-brutal text-xs font-bold bg-[#FFFBEB] px-2.5 py-1 border-2 border-black rounded">
+                  Petunjuk: ${maskedHint} (${wordObj.en.length} huruf)
+                </span>
+                <button type="button" onclick="speakWord('${wordObj.en}')" class="nb-btn bg-[#00F0FF] px-3 py-1.5 text-xs">
+                  🔊 DENGAR KATA
+                </button>
+              </div>
+            </div>
+
+            <div class="max-w-md mx-auto">
+              <input
+                id="typing-quest-input"
+                type="text"
+                autocomplete="off"
+                autocapitalize="characters"
+                spellcheck="false"
+                value="${item.userInput}"
+                placeholder="KETIK KATA DI SINI..."
+                class="nb-input w-full px-4 py-4 text-center font-pixel text-lg sm:text-xl uppercase tracking-widest ${q.feedbackState === 'WRONG' ? 'animate-shake bg-red-100' : q.feedbackState === 'CORRECT' ? 'bg-[#39FF14]/40' : ''}"
+              />
+            </div>
+
+            ${q.feedbackState === 'WRONG' ? `
+              <div class="p-3 bg-[#FF2A85] text-white border-3 border-black rounded text-center text-xs font-bold max-w-md mx-auto" style="border-width:3px;">
+                ❌ Ejaan belum cocok! Cek suku kata: <span class="underline">${wordObj.syllables}</span> lalu ketik ulang.
+              </div>
+            ` : ''}
+
+            <div class="text-center">
+              <button type="submit" class="nb-btn bg-[#39FF14] px-8 py-3.5 font-pixel text-xs sm:text-sm">
+                KIRIM EJAAN ↵
+              </button>
+            </div>
+          </form>
+        `;
+      }
+
+      return `
+        ${renderNavbar()}
+        <main class="flex-1 max-w-3xl mx-auto w-full px-4 py-6 space-y-5">
+          <!-- Quest Header -->
+          <div class="nb-card p-4 bg-white space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="px-3 py-1 border-2 border-black rounded font-pixel text-[10px] sm:text-xs ${q.stage === 3 ? 'text-white' : 'text-black'}" style="background:${stageColors[q.stage]};">
+                ${stageNames[q.stage]}
+              </span>
+              <div class="flex items-center gap-2">
+                <span class="font-mono-brutal text-xs font-extrabold px-2.5 py-1 bg-[#FFE600] border-2 border-black rounded">
+                  SKOR: ${q.score}
+                </span>
+                <span class="font-mono-brutal text-xs font-extrabold px-2.5 py-1 bg-[#00F0FF] border-2 border-black rounded">
+                  SOAL ${q.qIndex + 1}/${folder.words.length}
+                </span>
+              </div>
+            </div>
+
+            <div class="nb-progress-track h-4 w-full">
+              <div class="nb-progress-fill bg-[#39FF14]" style="width: ${questPercent}%"></div>
+            </div>
+          </div>
+
+          <!-- Active Question Card -->
+          <div class="nb-card-lg p-6 sm:p-8 bg-white animate-pop">
+            ${stageBodyHtml}
+          </div>
+
+          <div class="flex justify-between items-center">
+            <button onclick="State.view='STUDY_MODE'; SoundFX.click(); render();" class="nb-btn bg-white px-4 py-2 text-xs">
+              📖 BUKA KARTU BELAJAR
+            </button>
+            <span class="text-xs font-bold text-gray-600">Folder #${folder.id}: ${folder.title}</span>
+          </div>
+        </main>
+      `;
+    }
+
+    // ---------- VIEW 5: QUEST VICTORY & FOLDER UNLOCK CELEBRATION ----------
+    function renderQuestCompleteView() {
+      const summary = State.lastQuestSummary;
+      if (!summary) return renderStudentHub();
+      const { folder, finalScore, accuracy, stars, maxStreak, newlyUnlockedFolder } = summary;
+
+      return `
+        ${renderNavbar()}
+        <main class="flex-1 max-w-2xl mx-auto w-full px-4 py-8 flex items-center justify-center">
+          <div class="nb-card-lg p-6 sm:p-10 bg-white w-full text-center space-y-6 animate-pop">
+            <div class="inline-block bg-[#39FF14] border-3 border-black px-4 py-1.5 font-pixel text-xs shadow-[4px_4px_0px_#111827]" style="border-width:3px;">
+              ★ QUEST COMPLETED! ★
+            </div>
+
+            <h2 class="font-pixel text-xl sm:text-2xl leading-relaxed">
+              FOLDER #${folder.id} (${folder.title.toUpperCase()}) DIKUASAI!
+            </h2>
+
+            <!-- Stars Display -->
+            <div class="text-4xl sm:text-5xl text-amber-400 drop-shadow-[3px_3px_0px_#111827] tracking-widest">
+              ${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}
+            </div>
+
+            <!-- Score Summary Cards -->
+            <div class="grid grid-cols-3 gap-3">
+              <div class="nb-card p-3 bg-[#FFE600]">
+                <div class="text-[11px] font-extrabold">SKOR DIDAPAT</div>
+                <div class="font-pixel text-base sm:text-lg mt-1">+${finalScore}</div>
+              </div>
+              <div class="nb-card p-3 bg-[#00F0FF]">
+                <div class="text-[11px] font-extrabold">AKURASI</div>
+                <div class="font-pixel text-base sm:text-lg mt-1">${accuracy}%</div>
+              </div>
+              <div class="nb-card p-3 bg-[#B57EDC]">
+                <div class="text-[11px] font-extrabold">MAX STREAK</div>
+                <div class="font-pixel text-base sm:text-lg mt-1">${maxStreak}x</div>
+              </div>
+            </div>
+
+            ${newlyUnlockedFolder ? `
+              <div class="p-4 bg-[#FFFBEB] border-3 border-black rounded space-y-1" style="border-width:3px;">
+                <div class="font-pixel text-xs text-[#FF2A85]">🔓 FOLDER BARU TERBUKA!</div>
+                <div class="text-base font-extrabold">
+                  Level ${newlyUnlockedFolder.level} — Folder #${newlyUnlockedFolder.id}: ${newlyUnlockedFolder.title} (${newlyUnlockedFolder.subtitle})
+                </div>
+              </div>
+            ` : `
+              <div class="p-3 bg-[#FFFBEB] border-2 border-black rounded text-xs font-bold">
+                🎉 Hebat! Kamu telah menyelesaikan seluruh folder atau meningkatkan rekor skormu!
+              </div>
+            `}
+
+            <div class="flex flex-col sm:flex-row gap-3 pt-2">
+              <button onclick="State.view='STUDENT_HUB'; SoundFX.click(); render();" class="nb-btn bg-white flex-1 py-3.5 text-xs sm:text-sm">
+                🗺️ PETA FOLDER
+              </button>
+              ${newlyUnlockedFolder ? `
+                <button onclick="startFolderStudy(${newlyUnlockedFolder.id})" class="nb-btn bg-[#39FF14] flex-1 py-3.5 font-pixel text-xs">
+                  LANJUT FOLDER #${newlyUnlockedFolder.id} ▶
+                </button>
+              ` : `
+                <button onclick="startFolderStudy(${folder.id})" class="nb-btn bg-[#FFE600] flex-1 py-3.5 text-xs sm:text-sm">
+                  ULANGI FOLDER INI ↺
+                </button>
+              `}
+            </div>
+          </div>
+        </main>
+      `;
+    }
+
+    // ---------- VIEW 6: TEACHER DASHBOARD (MEMANTAU PROGRESS SISWA) ----------
+    function renderTeacherDashboard() {
+      const enriched = State.students.map(s => ({
+        ...s,
+        stats: computeStudentStats(s),
+        currentFolderObj: CURRICULUM.find(f => f.id === s.unlockedFolderId) || CURRICULUM[CURRICULUM.length - 1]
+      }));
+
+      // Aggregate KPIs
+      const totalStudents = enriched.length;
+      const avgScore = totalStudents
+        ? Math.round(enriched.reduce((sum, s) => sum + s.stats.totalScore, 0) / totalStudents)
+        : 0;
+      const avgFolders = totalStudents
+        ? (enriched.reduce((sum, s) => sum + s.stats.completedCount, 0) / totalStudents).toFixed(1)
+        : 0;
+      const avgAccuracy = totalStudents
+        ? Math.round(enriched.reduce((sum, s) => sum + s.stats.avgAccuracy, 0) / totalStudents)
+        : 0;
+
+      // Filter & Sort
+      const classes = ['ALL', '7', '8', '9', 'UMUM'];
+      let filtered = enriched.filter(s => {
+        const matchClass = State.teacherFilterClass === 'ALL' || s.className === State.teacherFilterClass;
+        const matchSearch = s.name.toLowerCase().includes(State.teacherSearch.toLowerCase());
+        return matchClass && matchSearch;
+      });
+
+      filtered.sort((a, b) => {
+        if (State.teacherSortBy === 'SCORE') return b.stats.totalScore - a.stats.totalScore;
+        if (State.teacherSortBy === 'PROGRESS') return b.stats.completedCount - a.stats.completedCount;
+        return a.username.localeCompare(b.username);
+      });
+
+      const studentRowsHtml = filtered.map(s => {
+        const av = getAvatarObj(s.avatar);
+        return `
+          <div class="nb-card p-4 bg-white flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <!-- Student Identity -->
+            <div class="flex items-center gap-3 min-w-[210px]">
+              <div class="w-12 h-12 border-3 border-black rounded flex items-center justify-center text-2xl shrink-0" style="background:${av.bg}; border-width:3px;">
+                ${av.emoji}
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="font-extrabold text-base">@${s.username}</span>
+                  <span class="font-mono-brutal text-[11px] font-bold px-2 py-0.5 bg-[#FFE600] border-2 border-black rounded">
+                    KELAS ${s.className}
+                  </span>
+                </div>
+                <div class="text-xs font-semibold text-gray-600 mt-0.5">
+                  Posisi: <strong>Lv.${s.currentFolderObj.level} #${s.currentFolderObj.id} ${s.currentFolderObj.title}</strong> • <span class="text-gray-500">${s.lastActive}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="flex-1 max-w-md">
+              <div class="flex justify-between text-xs font-extrabold mb-1">
+                <span>Progress: ${s.stats.completedCount}/21 Folder</span>
+                <span>${s.stats.progressPercent}%</span>
+              </div>
+              <div class="nb-progress-track h-4 w-full">
+                <div class="nb-progress-fill bg-[#00F0FF]" style="width: ${s.stats.progressPercent}%"></div>
+              </div>
+            </div>
+
+            <!-- Score, Accuracy & Action -->
+            <div class="flex flex-wrap items-center justify-between md:justify-end gap-3">
+              <div class="text-right">
+                <div class="font-mono-brutal font-extrabold text-sm bg-black text-[#39FF14] px-2.5 py-1 rounded">
+                  ${s.stats.totalScore} XP
+                </div>
+                <div class="text-[11px] font-bold text-gray-700 mt-0.5">Akurasi: ${s.stats.avgAccuracy}%</div>
+              </div>
+              <button onclick="openStudentDetailModal('${s.id}')" class="nb-btn bg-[#FFE600] px-3.5 py-2.5 text-xs">
+                DETAIL 🔍
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      return `
+        ${renderNavbar()}
+        <main class="flex-1 max-w-7xl mx-auto w-full px-4 py-6 space-y-6">
+          <!-- Header Banner -->
+          <div class="nb-card-lg p-5 sm:p-6 bg-[#B57EDC] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <span class="font-pixel text-[10px] bg-white px-2.5 py-1 border-2 border-black">TEACHER MONITORING PORTAL</span>
+              <h1 class="font-pixel text-lg sm:text-xl mt-2">DASHBOARD PROGRESS SISWA</h1>
+              <p class="text-xs sm:text-sm font-bold mt-1">Pantau penguasaan vocabulary, folder terbuka, dan akurasi ejaan setiap siswa.</p>
+            </div>
+            <button onclick="exportTeacherCSV()" class="nb-btn bg-[#39FF14] px-4 py-3 text-xs shrink-0">
+              📥 UNDUH LAPORAN CSV
+            </button>
+          </div>
+
+          <!-- 4 KPI Cards -->
+          <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="nb-card p-4 bg-white">
+              <div class="text-xs font-extrabold text-gray-600">TOTAL SISWA AKTIF</div>
+              <div class="font-pixel text-2xl mt-2">${totalStudents}</div>
+              <div class="text-xs font-bold text-emerald-700 mt-1">Terdaftar di Kelas</div>
+            </div>
+            <div class="nb-card p-4 bg-[#FFE600]">
+              <div class="text-xs font-extrabold">RATA-RATA SKOR XP</div>
+              <div class="font-pixel text-2xl mt-2">${avgScore}</div>
+              <div class="text-xs font-bold mt-1">Poin Akumulasi Quest</div>
+            </div>
+            <div class="nb-card p-4 bg-[#00F0FF]">
+              <div class="text-xs font-extrabold">RATA-RATA FOLDER</div>
+              <div class="font-pixel text-2xl mt-2">${avgFolders} / 21</div>
+              <div class="text-xs font-bold mt-1">Folder Diselesaikan</div>
+            </div>
+            <div class="nb-card p-4 bg-[#39FF14]">
+              <div class="text-xs font-extrabold">RATA-RATA AKURASI</div>
+              <div class="font-pixel text-2xl mt-2">${avgAccuracy}%</div>
+              <div class="text-xs font-bold mt-1">Ketepatan Ejaan Kata</div>
+            </div>
+          </section>
+
+          <!-- Filter & Search Controls -->
+          <section class="nb-card p-4 bg-white flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-xs font-extrabold mr-1">FILTER KELAS:</span>
+              ${classes.map(cls => `
+                <button
+                  onclick="State.teacherFilterClass='${cls}'; SoundFX.click(); render();"
+                  class="nb-btn px-3 py-1.5 text-xs ${State.teacherFilterClass === cls ? 'bg-[#FFE600]' : 'bg-gray-100'}"
+                >
+                  ${cls === 'ALL' ? 'SEMUA KELAS' : 'KELAS ' + cls}
+                </button>
+              `).join('')}
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-2">
+              <input
+                type="text"
+                value="${State.teacherSearch}"
+                oninput="State.teacherSearch = this.value; render();"
+                placeholder="Cari nama siswa..."
+                class="nb-input px-3 py-2 text-xs font-bold"
+              />
+              <select
+                onchange="State.teacherSortBy = this.value; render();"
+                class="nb-input px-3 py-2 text-xs font-bold"
+              >
+                <option value="SCORE" ${State.teacherSortBy === 'SCORE' ? 'selected' : ''}>Urutkan: Skor Tertinggi</option>
+                <option value="PROGRESS" ${State.teacherSortBy === 'PROGRESS' ? 'selected' : ''}>Urutkan: Folder Terbanyak</option>
+                <option value="NAME" ${State.teacherSortBy === 'NAME' ? 'selected' : ''}>Urutkan: Nama A-Z</option>
+              </select>
+            </div>
+          </section>
+
+          <!-- Student Cards List -->
+          <section class="space-y-3">
+            ${studentRowsHtml || `
+              <div class="nb-card p-8 bg-white text-center space-y-3">
+                <div class="font-bold text-gray-700">
+                  ${State.students.length === 0
+                    ? 'Belum ada siswa yang login menggunakan username di database.'
+                    : 'Tidak ada siswa yang sesuai dengan filter pencarian.'}
+                </div>
+                ${State.students.length === 0 ? `
+                  <button onclick="seedDemoStudentsToFirestore()" class="nb-btn bg-[#FFE600] px-4 py-2.5 text-xs">
+                    ➕ MUAT 3 DATA SISWA CONTOH
+                  </button>
+                ` : ''}
+              </div>
+            `}
+          </section>
+        </main>
+      `;
+    }
+
+    /* ==========================================================================
+       11. KEYBOARD SHORTCUTS & MASTER RENDER LOOP
+       ========================================================================== */
+    window.addEventListener('keydown', (e) => {
+      if (State.view !== 'QUEST_MODE' || !State.quest) return;
+      const q = State.quest;
+      // Support physical keyboard typing during Stage 1 Anagram
+      if (q.stage === 1 && q.feedbackState !== 'CORRECT') {
+        const key = e.key.toUpperCase();
+        if (/^[A-Z]$/.test(key)) {
+          const item = q.anagramPool[q.qIndex];
+          const matchingTile = item.tiles.find(t => !t.used && t.char === key);
+          if (matchingTile) handleAnagramTilePick(matchingTile.id);
+        } else if (e.key === 'Backspace') {
+          const item = q.anagramPool[q.qIndex];
+          if (item.selectedTileIds.length > 0) {
+            handleAnagramSlotRemove(item.selectedTileIds.length - 1);
+          }
+        } else if (e.key === 'Enter') {
+          submitQuestAnswer();
+        }
+      }
+    });
+
+    function render() {
+      const app = document.getElementById('app');
+      if (!app) return;
+
+      switch (State.view) {
+        case 'LOGIN':
+          app.innerHTML = renderLoginView();
+          break;
+        case 'STUDENT_HUB':
+          app.innerHTML = renderStudentHub();
+          break;
+        case 'STUDY_MODE':
+          app.innerHTML = renderStudyMode();
+          break;
+        case 'QUEST_MODE':
+          app.innerHTML = renderQuestMode();
+          if (State.quest?.stage === 3) {
+            const inp = document.getElementById('typing-quest-input');
+            if (inp) inp.focus();
+          }
+          break;
+        case 'QUEST_COMPLETE':
+          app.innerHTML = renderQuestCompleteView();
+          break;
+        case 'TEACHER_DASHBOARD':
+          app.innerHTML = renderTeacherDashboard();
+          break;
+        default:
+          app.innerHTML = renderLoginView();
+      }
+    }
+
+    // Expose interactive handlers to window for inline HTML events in module script
+    Object.assign(window, {
+      State,
+      SoundFX,
+      CURRICULUM,
+      render,
+      speakWord,
+      handleStudentLogin,
+      quickLoginExistingStudent,
+      handleTeacherLogin,
+      logoutToHome,
+      startFolderStudy,
+      startFolderQuest,
+      handleAnagramTilePick,
+      handleAnagramSlotRemove,
+      clearAnagramSelection,
+      submitQuestAnswer,
+      toggleMultipleChoiceHint,
+      openStudentDetailModal,
+      closeModal,
+      exportTeacherCSV,
+      seedDemoStudentsToFirestore
+    });
+
+    // Initialize Application & Firebase Backend on Load
+    window.onload = function () {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.getVoices();
+      }
+      render();
+      initFirebaseBackend();
+    };
+  </script>
+</body>
+</html>
